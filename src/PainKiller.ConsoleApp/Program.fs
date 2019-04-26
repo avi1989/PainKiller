@@ -12,9 +12,9 @@ let main argv =
     let databaseRetriever = new DatabaseRetriever() :> IDatabaseRetriever
     let database = databaseRetriever.GetDatabase connString
 
-    database.tables |> DatabaseWriter.TableWriter.writeToFileSystem "postgres" basePath |> ignore
-    database.functions |> DatabaseWriter.SimpleScriptWriter.writeToFileSystem basePath "functions" |> ignore
-    database.views |> DatabaseWriter.SimpleScriptWriter.writeToFileSystem basePath "views" |> ignore
-    database.procedures |> DatabaseWriter.SimpleScriptWriter.writeToFileSystem basePath "procedures" |> ignore
-    database.userDefinedTypes |> DatabaseWriter.UdtWriter.writeToFileSystem basePath |> ignore
+    database.tables |> FileSystem.Writer.TableWriter.writeToFileSystem "postgres" basePath |> ignore
+    database.functions |> FileSystem.Writer.SimpleScriptWriter.writeToFileSystem basePath "functions" |> ignore
+    database.views |> FileSystem.Writer.SimpleScriptWriter.writeToFileSystem basePath "views" |> ignore
+    database.procedures |> FileSystem.Writer.SimpleScriptWriter.writeToFileSystem basePath "procedures" |> ignore
+    database.userDefinedTypes |> FileSystem.Writer.UdtWriter.writeToFileSystem basePath |> ignore
     0

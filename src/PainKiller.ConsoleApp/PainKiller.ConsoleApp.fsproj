@@ -15,16 +15,20 @@
     <Compile Include="postgresql\Retrievers\FunctionRetriever.fs" />
     <Compile Include="postgresql\Retrievers\TableRetriever.fs" />
     <Compile Include="postgresql\DatabaseRetriever.fs" />
-    <Compile Include="databaseWriter\Dto.fs" />
-    <Compile Include="databaseWriter\XmlWriter.fs" />
-    <Compile Include="databaseWriter\TableWriter.fs" />
-    <Compile Include="databaseWriter\UdtWriter.fs" />
-    <Compile Include="databaseWriter\SimpleScriptWriter.fs" />
+    <Compile Include="FileSystem\Dto.fs" />
+    <Compile Include="FileSystem\Writers\XmlWriter.fs" />
+    <Compile Include="FileSystem\Writers\TableWriter.fs" />
+    <Compile Include="FileSystem\Writers\UdtWriter.fs" />
+    <Compile Include="FileSystem\Writers\SimpleScriptWriter.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Npgsql" Version="4.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="postgresql\Persister\" />
   </ItemGroup>
 
 </Project>
