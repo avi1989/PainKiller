@@ -5,7 +5,8 @@ open System.IO
 open PainKiller.ConsoleApp.PostgreSQL
 
 [<CLIMutable>]
-[<XmlRoot("column")>]
+[<XmlRoot("attribute")>]
+[<XmlType("attribute")>]
 type Attribute = {
     [<XmlAttribute>] 
     name: string;
@@ -16,23 +17,16 @@ type Attribute = {
 }
 
 [<CLIMutable>]
-[<XmlRoot("tables")>]
+[<XmlRoot("type")>]
+[<XmlType("type")>]
 type UserDefinedType = {
     [<XmlAttribute>] 
     name: string;
     [<XmlAttribute>] 
     schema: string;
     [<XmlArray>]
-    columns: System.Collections.Generic.List<Attribute>;
+    attributes: System.Collections.Generic.List<Attribute>;
 }
-
-let private writeTableToDisk filePath (table: UserDefinedType) =
-    let baseDir = sprintf "%s/userDefinedTypes" filePath
-    baseDir |> Directory.CreateDirectory |> ignore
-    let serializer = new XmlSerializer(typeof<UserDefinedType>)
-    let filePath = sprintf "%s/%s.xml" baseDir table.name
-    use fileStream = new FileStream((filePath), FileMode.Create, FileAccess.Write)
-    serializer.Serialize(fileStream, table) |> ignore
 
 let private convertDomainColumnToDto (item: UdtRetriever.UdtAttributes) = 
     {
@@ -44,7 +38,7 @@ let private convertDomainColumnToDto (item: UdtRetriever.UdtAttributes) =
 let private convertDomainTableToDto (item: UdtRetriever.UdtInfo) =
     { name = item.name
       schema = item.schema
-      columns = item.attributes 
+      attributes = item.attributes 
                 |> List.sortBy (fun x -> x.position) 
                 |> List.map convertDomainColumnToDto 
                 |> List.toArray 
@@ -54,4 +48,4 @@ let private convertDomainTableToDto (item: UdtRetriever.UdtInfo) =
 let writeToFileSystem filePath (tables: UdtRetriever.UdtInfo list) =
     tables 
         |> List.map convertDomainTableToDto 
-        |> List.iter (writeTableToDisk filePath)
+        |> List.iter (fun x -> XmlWriter.writeXml filePath "userDefinedTypes" x.name x)

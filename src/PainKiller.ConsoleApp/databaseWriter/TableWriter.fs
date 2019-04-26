@@ -38,14 +38,6 @@ type TableInfo = {
     columns: System.Collections.Generic.List<ColumnInfo>;
 }
 
-let private writeTableToDisk filePath (table: TableInfo) =
-    let baseDir = sprintf "%s/tables" filePath
-    baseDir |> Directory.CreateDirectory |> ignore
-    let serializer = new XmlSerializer(typeof<TableInfo>)
-    let filePath = sprintf "%s/%s.xml" baseDir table.name
-    use fileStream = new FileStream((filePath), FileMode.Create, FileAccess.Write)
-    serializer.Serialize(fileStream, table) |> ignore
-
 let private convertDomainColumnToDto engine (item: TableRetriever.Column) = 
     {
         name = item.name
@@ -69,4 +61,4 @@ let private convertDomainTableToDto engine (item: TableRetriever.TableInfo) =
 let writeToFileSystem engine filePath (tables: TableRetriever.TableInfo list) =
     tables 
         |> List.map (convertDomainTableToDto engine)
-        |> List.iter (writeTableToDisk filePath)
+        |> List.iter (fun x -> XmlWriter.writeXml filePath "tables" x.name x)

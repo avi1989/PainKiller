@@ -12,6 +12,7 @@
     <Compile Include="postgresql\ViewRetriever.fs" />
     <Compile Include="postgresql\FunctionRetriever.fs" />
     <Compile Include="postgresql\TableRetriever.fs" />
+    <Compile Include="databaseWriter\xmlWriter.fs" />
     <Compile Include="databaseWriter\FunctionWriter.fs" />
     <Compile Include="databaseWriter\ProcedureWriter.fs" />
     <Compile Include="databaseWriter\ViewWriter.fs" />
