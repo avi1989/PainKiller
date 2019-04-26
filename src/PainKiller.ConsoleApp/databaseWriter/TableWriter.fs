@@ -3,6 +3,7 @@
 open System.Xml.Serialization
 open System.IO
 open PainKiller.ConsoleApp.PostgreSQL
+open PainKiller.ConsoleApp
 
 [<CLIMutable>]
 [<XmlRoot("default")>]
@@ -38,7 +39,7 @@ type TableInfo = {
     columns: System.Collections.Generic.List<ColumnInfo>;
 }
 
-let private convertDomainColumnToDto engine (item: TableRetriever.Column) = 
+let private convertDomainColumnToDto engine (item: Models.Column) = 
     {
         name = item.name
         ``type`` = item.``type``
@@ -48,7 +49,7 @@ let private convertDomainColumnToDto engine (item: TableRetriever.Column) =
         isNullable = item.isNullable
     }
 
-let private convertDomainTableToDto engine (item: TableRetriever.TableInfo) =
+let private convertDomainTableToDto engine (item: Models.TableInfo) =
     { name = item.name
       schema = item.schema
       columns = item.columns 
@@ -58,7 +59,7 @@ let private convertDomainTableToDto engine (item: TableRetriever.TableInfo) =
                 |> System.Collections.Generic.List<ColumnInfo>
     }
 
-let writeToFileSystem engine filePath (tables: TableRetriever.TableInfo list) =
+let writeToFileSystem engine filePath (tables: Models.TableInfo list) =
     tables 
         |> List.map (convertDomainTableToDto engine)
         |> List.iter (fun x -> XmlWriter.writeXml filePath "tables" x.name x)

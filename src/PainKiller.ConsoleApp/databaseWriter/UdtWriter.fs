@@ -2,7 +2,7 @@
 
 open System.Xml.Serialization
 open System.IO
-open PainKiller.ConsoleApp.PostgreSQL
+open PainKiller.ConsoleApp
 
 [<CLIMutable>]
 [<XmlRoot("attribute")>]
@@ -28,14 +28,14 @@ type UserDefinedType = {
     attributes: System.Collections.Generic.List<Attribute>;
 }
 
-let private convertDomainColumnToDto (item: UdtRetriever.UdtAttributes) = 
+let private convertDomainColumnToDto (item: Models.UdtAttributes) = 
     {
         name = item.name
         ``type`` = item.``type``
         isNullable = item.isNullable
     }
 
-let private convertDomainTableToDto (item: UdtRetriever.UdtInfo) =
+let private convertDomainTableToDto (item: Models.UdtInfo) =
     { name = item.name
       schema = item.schema
       attributes = item.attributes 
@@ -45,7 +45,7 @@ let private convertDomainTableToDto (item: UdtRetriever.UdtInfo) =
                 |> System.Collections.Generic.List<Attribute>
     }
 
-let writeToFileSystem filePath (tables: UdtRetriever.UdtInfo list) =
+let writeToFileSystem filePath (tables: Models.UdtInfo list) =
     tables 
         |> List.map convertDomainTableToDto 
         |> List.iter (fun x -> XmlWriter.writeXml filePath "userDefinedTypes" x.name x)

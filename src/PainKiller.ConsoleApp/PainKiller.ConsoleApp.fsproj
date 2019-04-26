@@ -6,18 +6,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Models.fs" />
     <Compile Include="postgresql\ColumnTypeMapper.fs" />
     <Compile Include="postgresql\UdtRetriever.fs" />
     <Compile Include="postgresql\ProcedureRetriever.fs" />
     <Compile Include="postgresql\ViewRetriever.fs" />
     <Compile Include="postgresql\FunctionRetriever.fs" />
     <Compile Include="postgresql\TableRetriever.fs" />
-    <Compile Include="databaseWriter\xmlWriter.fs" />
-    <Compile Include="databaseWriter\FunctionWriter.fs" />
-    <Compile Include="databaseWriter\ProcedureWriter.fs" />
-    <Compile Include="databaseWriter\ViewWriter.fs" />
+    <Compile Include="databaseWriter\XmlWriter.fs" />
     <Compile Include="databaseWriter\TableWriter.fs" />
     <Compile Include="databaseWriter\UdtWriter.fs" />
+    <Compile Include="databaseWriter\SimpleScriptWriter.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

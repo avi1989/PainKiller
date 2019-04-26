@@ -3,20 +3,7 @@
 open Npgsql;
 open System.Data;
 open ColumnTypeMapper
-
-type Column = {
-    name: string;
-    position: int;
-    ``type``: string;
-    defaultValue: string option;
-    isNullable: bool;
-}
-
-type TableInfo = {
-    name: string;
-    schema: string;
-    columns: Column list;
-}
+open PainKiller.ConsoleApp.Models
 
 let getTableQuery = """
 SELECT table_name, table_schema

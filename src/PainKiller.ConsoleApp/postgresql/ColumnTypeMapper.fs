@@ -1,9 +1,7 @@
 ﻿module PainKiller.ConsoleApp.PostgreSQL.ColumnTypeMapper
-open System
 
-type ColumnType =
-    | TypeWithoutLength of string
-    | TypeWithLength of string * int
+open PainKiller.ConsoleApp.Models
+open System
 
 let mapColumnsWithoutLength column =
     match column with

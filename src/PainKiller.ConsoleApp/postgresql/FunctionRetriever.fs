@@ -1,12 +1,7 @@
 ﻿module PainKiller.ConsoleApp.PostgreSQL.FunctionRetriever
 
 open Npgsql
-
-type Function = {
-    name: string;
-    schema: string;
-    definition: string;
-}
+open PainKiller.ConsoleApp.Models
 
 let getFunctionQuery = """
 SELECT 

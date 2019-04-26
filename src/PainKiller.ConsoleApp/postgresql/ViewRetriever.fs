@@ -1,12 +1,7 @@
 ﻿module PainKiller.ConsoleApp.PostgreSQL.ViewRetriever
 
 open Npgsql
-
-type View = {
-    name: string;
-    schema: string;
-    definition: string
-}
+open PainKiller.ConsoleApp.Models
 
 let getViewQuery = """
 SELECT 

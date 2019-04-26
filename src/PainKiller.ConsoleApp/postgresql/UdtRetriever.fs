@@ -3,6 +3,7 @@
 open Npgsql
 open System.Data
 open ColumnTypeMapper
+open PainKiller.ConsoleApp.Models
 
 
 let getUserDefinedTypesQuery = """
@@ -23,18 +24,6 @@ FROM information_schema.attributes
 WHERE udt_schema = @schema and udt_name = @name;
 """
 
-type UdtAttributes = {
-    name: string;
-    position: int;
-    ``type``: string;
-    isNullable: bool;
-}
-
-type UdtInfo = {
-    name: string;
-    schema: string;
-    attributes: UdtAttributes list;
-}
 
 let loadColumnsForUserDefinedType (connection: NpgsqlConnection) schema column =
     if (connection.State <> ConnectionState.Open)
