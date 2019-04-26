@@ -5,19 +5,30 @@ open System.IO
 open PainKiller.ConsoleApp.PostgreSQL
 
 [<CLIMutable>]
+[<XmlRoot("default")>]
+[<XmlType("default")>]
+type DefaultValue = {
+    [<XmlAttribute>] 
+    engine: string
+    query: string
+}
+
+[<CLIMutable>]
 [<XmlRoot("column")>]
+[<XmlType("column")>]
 type ColumnInfo = {
     [<XmlAttribute>] 
     name: string;
     [<XmlAttribute>] 
     ``type``: string;
-    defaultValue: string;
+    defaults: System.Collections.Generic.List<DefaultValue>;
     [<XmlAttribute>] 
     isNullable: bool 
 }
 
 [<CLIMutable>]
-[<XmlRoot("tables")>]
+[<XmlRoot("table")>]
+[<XmlType("table")>]
 type TableInfo = {
     [<XmlAttribute>] 
     name: string;
@@ -35,27 +46,27 @@ let private writeTableToDisk filePath (table: TableInfo) =
     use fileStream = new FileStream((filePath), FileMode.Create, FileAccess.Write)
     serializer.Serialize(fileStream, table) |> ignore
 
-let private convertDomainColumnToDto (item: TableRetriever.Column) = 
+let private convertDomainColumnToDto engine (item: TableRetriever.Column) = 
     {
         name = item.name
         ``type`` = item.``type``
-        defaultValue = match item.defaultValue with
-                       | Some a -> a
+        defaults = match item.defaultValue with
+                       | Some a -> [{engine = engine; query = a }] |> List.toArray |> System.Collections.Generic.List<DefaultValue>
                        | None -> null
         isNullable = item.isNullable
     }
 
-let private convertDomainTableToDto (item: TableRetriever.TableInfo) =
+let private convertDomainTableToDto engine (item: TableRetriever.TableInfo) =
     { name = item.name
       schema = item.schema
       columns = item.columns 
                 |> List.sortBy (fun x -> x.position) 
-                |> List.map convertDomainColumnToDto 
+                |> List.map (convertDomainColumnToDto engine)
                 |> List.toArray 
                 |> System.Collections.Generic.List<ColumnInfo>
     }
 
-let writeToFileSystem filePath (tables: TableRetriever.TableInfo list) =
+let writeToFileSystem engine filePath (tables: TableRetriever.TableInfo list) =
     tables 
-        |> List.map convertDomainTableToDto 
+        |> List.map (convertDomainTableToDto engine)
         |> List.iter (writeTableToDisk filePath)

@@ -14,7 +14,7 @@ let main argv =
     let views = connString |> ViewRetriever.loadViews
     let procedures = connString |> ProcedureRetriever.loadProcedures
     let userDefiniedTypes = connString |> UdtRetriever.loadUserDefinedTypes
-    result |> DatabaseWriter.TableWriter.writeToFileSystem basePath |> ignore
+    result |> DatabaseWriter.TableWriter.writeToFileSystem "postgres" basePath |> ignore
     functions |> DatabaseWriter.FunctionWriter.writeToFileSystem basePath |> ignore
     views |> DatabaseWriter.ViewWriter.writeToFileSystem basePath |> ignore
     procedures |> DatabaseWriter.ProcedureWriter.writeToFileSystem basePath |> ignore
