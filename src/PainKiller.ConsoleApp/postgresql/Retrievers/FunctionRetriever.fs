@@ -1,4 +1,4 @@
-﻿module PainKiller.ConsoleApp.PostgreSQL.FunctionRetriever
+﻿module PainKiller.ConsoleApp.PostgreSQL.Retrievers.FunctionRetriever
 
 open Npgsql
 open PainKiller.ConsoleApp.Models

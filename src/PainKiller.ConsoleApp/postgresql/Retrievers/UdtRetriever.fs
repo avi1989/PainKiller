@@ -1,4 +1,4 @@
-﻿module PainKiller.ConsoleApp.PostgreSQL.UdtRetriever
+﻿module PainKiller.ConsoleApp.PostgreSQL.Retrievers.UdtRetriever
 
 open Npgsql
 open System.Data

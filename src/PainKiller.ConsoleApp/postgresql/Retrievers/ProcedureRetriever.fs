@@ -1,4 +1,4 @@
-﻿module PainKiller.ConsoleApp.PostgreSQL.ProcedureRetriever
+﻿module PainKiller.ConsoleApp.PostgreSQL.Retrievers.ProcedureRetriever
 
 open Npgsql
 open PainKiller.ConsoleApp.Models

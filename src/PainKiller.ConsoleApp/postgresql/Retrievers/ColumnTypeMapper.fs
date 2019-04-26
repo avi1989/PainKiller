@@ -1,4 +1,4 @@
-﻿module PainKiller.ConsoleApp.PostgreSQL.ColumnTypeMapper
+﻿module PainKiller.ConsoleApp.PostgreSQL.Retrievers.ColumnTypeMapper
 
 open PainKiller.ConsoleApp.Models
 open System

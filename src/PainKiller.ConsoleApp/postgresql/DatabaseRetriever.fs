@@ -2,6 +2,7 @@
 
 open PainKiller.ConsoleApp.Contracts
 open Npgsql
+open PainKiller.ConsoleApp.PostgreSQL.Retrievers
 
 type DatabaseRetriever() =
     interface IDatabaseRetriever with

@@ -1,4 +1,4 @@
-﻿module PainKiller.ConsoleApp.PostgreSQL.ViewRetriever
+﻿module PainKiller.ConsoleApp.PostgreSQL.Retrievers.ViewRetriever
 
 open Npgsql
 open PainKiller.ConsoleApp.Models

@@ -1,4 +1,4 @@
-﻿module PainKiller.ConsoleApp.PostgreSQL.TableRetriever
+﻿module PainKiller.ConsoleApp.PostgreSQL.Retrievers.TableRetriever
 
 open Npgsql;
 open System.Data;
