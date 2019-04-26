@@ -7,12 +7,14 @@
 
   <ItemGroup>
     <Compile Include="Models.fs" />
+    <Compile Include="Contracts\IDatabaseRetriever.fs" />
     <Compile Include="postgresql\ColumnTypeMapper.fs" />
     <Compile Include="postgresql\UdtRetriever.fs" />
     <Compile Include="postgresql\ProcedureRetriever.fs" />
     <Compile Include="postgresql\ViewRetriever.fs" />
     <Compile Include="postgresql\FunctionRetriever.fs" />
     <Compile Include="postgresql\TableRetriever.fs" />
+    <Compile Include="postgresql\DatabaseRetriever.fs" />
     <Compile Include="databaseWriter\XmlWriter.fs" />
     <Compile Include="databaseWriter\TableWriter.fs" />
     <Compile Include="databaseWriter\UdtWriter.fs" />

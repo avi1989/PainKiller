@@ -1,8 +1,6 @@
 ﻿module PainKiller.ConsoleApp.DatabaseWriter.TableWriter
 
 open System.Xml.Serialization
-open System.IO
-open PainKiller.ConsoleApp.PostgreSQL
 open PainKiller.ConsoleApp
 
 [<CLIMutable>]

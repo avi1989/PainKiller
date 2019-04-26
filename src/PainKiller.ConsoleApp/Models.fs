@@ -36,3 +36,11 @@ type TableInfo = {
     schema: string;
     columns: Column list;
 }
+
+type Database = {
+    tables: TableInfo list
+    functions: SimpleDatabaseItem list
+    views: SimpleDatabaseItem list
+    procedures: SimpleDatabaseItem list
+    userDefinedTypes: UdtInfo list
+}

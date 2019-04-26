@@ -16,8 +16,7 @@ LEFT JOIN pg_namespace ns on ns.oid = proc.pronamespace
     AND probin is null;
 """
 
-let loadFunctions connectionString =
-    use conn = new NpgsqlConnection(connectionString)
+let loadFunctions (conn: NpgsqlConnection) =
     conn.Open()
     use command = conn.CreateCommand()
     command.CommandText <- getFunctionQuery

@@ -1,7 +1,6 @@
 ﻿module PainKiller.ConsoleApp.DatabaseWriter.UdtWriter
 
 open System.Xml.Serialization
-open System.IO
 open PainKiller.ConsoleApp
 
 [<CLIMutable>]

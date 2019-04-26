@@ -51,9 +51,8 @@ let loadColumnsForUserDefinedType (connection: NpgsqlConnection) schema column =
                 isNullable = isNullable}
     ]
 
-let loadUserDefinedTypes connectionString = 
-    use connection = new NpgsqlConnection(connectionString)
-    use attributeConnection = new NpgsqlConnection(connectionString);
+let loadUserDefinedTypes (connection: NpgsqlConnection) connectionFactory = 
+    use attributeConnection = connectionFactory()
     connection.Open()
     use command = connection.CreateCommand()
     command.CommandText <- getUserDefinedTypesQuery

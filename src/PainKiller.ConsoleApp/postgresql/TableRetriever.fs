@@ -50,9 +50,8 @@ let loadColumnsForTable (conn:NpgsqlConnection) tableName schemaName =
                 isNullable = isNullable}
     ]
 
-let loadTables connectionString =
-    use connection = new NpgsqlConnection(connectionString)
-    use columnConnection = new NpgsqlConnection(connectionString);
+let loadTables (connection: NpgsqlConnection) connectionFactory = 
+    use columnConnection = connectionFactory()
     connection.Open()
     let loadColumn = loadColumnsForTable columnConnection
     use command = connection.CreateCommand();
