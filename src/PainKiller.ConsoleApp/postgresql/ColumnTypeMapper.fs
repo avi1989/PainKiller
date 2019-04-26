@@ -1,4 +1,4 @@
-﻿module PainKiller.ConsoleApp.ColumnTypeMapper
+﻿module PainKiller.ConsoleApp.PostgreSQL.ColumnTypeMapper
 open System
 
 type ColumnType =

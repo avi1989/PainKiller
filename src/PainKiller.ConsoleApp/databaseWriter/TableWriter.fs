@@ -1,8 +1,8 @@
-﻿module PainKiller.ConsoleApp.DatabaseWriter
+﻿module PainKiller.ConsoleApp.DatabaseWriter.TableWriter
 
-open System.Runtime.Serialization
 open System.Xml.Serialization
 open System.IO
+open PainKiller.ConsoleApp.PostgreSQL
 
 [<CLIMutable>]
 [<XmlRoot("column")>]
@@ -59,4 +59,3 @@ let writeToFileSystem filePath (tables: TableRetriever.TableInfo list) =
     tables 
         |> List.map convertDomainTableToDto 
         |> List.iter (writeTableToDisk filePath)
-    0

@@ -1,4 +1,4 @@
-﻿module PainKiller.ConsoleApp.TableRetriever
+﻿module PainKiller.ConsoleApp.PostgreSQL.TableRetriever
 
 open Npgsql;
 open System.Data;
@@ -64,8 +64,8 @@ let loadColumnsForTable (conn:NpgsqlConnection) tableName schemaName =
     ]
 
 let loadTables connectionString =
-    let connection = new NpgsqlConnection(connectionString)
-    let columnConnection = new NpgsqlConnection(connectionString);
+    use connection = new NpgsqlConnection(connectionString)
+    use columnConnection = new NpgsqlConnection(connectionString);
     connection.Open()
     let loadColumn = loadColumnsForTable columnConnection
     use command = connection.CreateCommand();

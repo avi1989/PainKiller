@@ -6,9 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="ColumnTypeMapper.fs" />
-    <Compile Include="TableRetriever.fs" />
-    <Compile Include="DatabaseWriter.fs" />
+    <Compile Include="postgresql\FunctionRetriever.fs" />
+    <Compile Include="postgresql\ColumnTypeMapper.fs" />
+    <Compile Include="postgresql\TableRetriever.fs" />
+    <Compile Include="databaseWriter\FunctionWriter.fs" />
+    <Compile Include="databaseWriter\TableWriter.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
