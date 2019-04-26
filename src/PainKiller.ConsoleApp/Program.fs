@@ -11,6 +11,12 @@ let main argv =
     let connString = "User ID=postgres;Password=password;Host=localhost;Port=5432;Database=coverme_encounters;";
     let result = connString |> TableRetriever.loadTables
     let functions = connString |> FunctionRetriever.loadFunctions
-    DatabaseWriter.TableWriter.writeToFileSystem basePath result |> ignore
-    DatabaseWriter.FunctionWriter.writeToFileSystem basePath functions |> ignore
+    let views = connString |> ViewRetriever.loadViews
+    let procedures = connString |> ProcedureRetriever.loadProcedures
+    let userDefiniedTypes = connString |> UdtRetriever.loadUserDefinedTypes
+    result |> DatabaseWriter.TableWriter.writeToFileSystem basePath |> ignore
+    functions |> DatabaseWriter.FunctionWriter.writeToFileSystem basePath |> ignore
+    views |> DatabaseWriter.ViewWriter.writeToFileSystem basePath |> ignore
+    procedures |> DatabaseWriter.ProcedureWriter.writeToFileSystem basePath |> ignore
+    userDefiniedTypes |> DatabaseWriter.UdtWriter.writeToFileSystem basePath |> ignore
     0
