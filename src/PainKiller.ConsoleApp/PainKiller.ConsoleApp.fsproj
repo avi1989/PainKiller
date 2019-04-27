@@ -10,6 +10,8 @@
     <Compile Include="Models.fs" />
     <Compile Include="Contracts\IDatabaseRetriever.fs" />
     <Compile Include="postgresql\ColumnTypeMapper.fs" />
+    <Compile Include="postgresql\Persister\SimpleScriptWriter.fs" />
+    <Compile Include="postgresql\Persister\UdtWriter.fs" />
     <Compile Include="postgresql\Persister\TableWriter.fs" />
     <Compile Include="postgresql\Retrievers\UdtRetriever.fs" />
     <Compile Include="postgresql\Retrievers\ProcedureRetriever.fs" />

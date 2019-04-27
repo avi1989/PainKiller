@@ -13,11 +13,11 @@ WHERE table_schema NOT IN ('pg_catalog', 'information_schema')
 AND table_schema NOT LIKE 'pg_toast%';
 """
 
-let parseDefinition schema name definition = 
+let parseDefinition schema name (definition: string) = 
     sprintf """
 CREATE OR REPLACE VIEW %s.%s AS (
 %s
-)""" schema name definition
+)""" schema name (definition.TrimEnd().TrimEnd(';'))
 
 let loadViews (connection: NpgsqlConnection) =
     if (connection.State <> System.Data.ConnectionState.Open) 
