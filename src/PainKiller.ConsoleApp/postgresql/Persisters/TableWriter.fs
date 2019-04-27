@@ -32,4 +32,21 @@ let createTable (sqlConnection: NpgsqlConnection) table =
 
 let createTables sqlConnection tables =
     tables
-    |> List.iter (createTable sqlConnection)
+        |> List.iter (createTable sqlConnection)
+    tables
+
+let addColumns (sqlConnection: NpgsqlConnection) schema table columns =
+    let buildQueryForTable = sprintf "ALTER TABLE %s.%s ADD COLUMN %s" schema table
+    let setConn ()= 
+        if sqlConnection.State <> ConnectionState.Open
+        then sqlConnection.Open() |> ignore
+
+    let executeQuery query =
+        use command = sqlConnection.CreateCommand()
+        command.CommandText <- query
+        command.ExecuteNonQuery() |> ignore
+    columns
+        |> List.iter(fun col -> 
+                        let query = buildQueryForTable (getColString col)
+                        setConn()
+                        executeQuery query )

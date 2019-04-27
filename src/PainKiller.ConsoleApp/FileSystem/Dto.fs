@@ -58,7 +58,7 @@ type ColumnInfo = {
           defaults = DefaultValue.FromDomain engine item.defaultValue
           isNullable = item.isNullable }
 
-    static member ToDomain index engine (item: ColumnInfo) =
+    static member ToDomain index engine tableName schemaName (item: ColumnInfo) =
         let defaultValue = item.defaults
                             |> List.ofSeq
                             |> List.filter (fun x -> x.engine = engine)
@@ -69,7 +69,9 @@ type ColumnInfo = {
           Models.Column.defaultValue = defaultValue 
           Models.Column.position = index 
           Models.Column.``type`` = Models.ColumnType.ToDomain(item.``type``)
-          Models.Column.isNullable = item.isNullable }
+          Models.Column.isNullable = item.isNullable 
+          Models.Column.schemaName = schemaName
+          Models.Column.tableName = tableName }
 
 [<CLIMutable>]
 [<XmlType("constraint")>]
@@ -179,7 +181,7 @@ type TableInfo = {
           Models.TableInfo.schema = item.schema 
           Models.TableInfo.columns = item.columns
                                         |> List.ofSeq
-                                        |> List.mapi (fun i x -> ColumnInfo.ToDomain i engine x) 
+                                        |> List.mapi (fun i x -> ColumnInfo.ToDomain i engine item.name item.schema x) 
           Models.TableInfo.constraints = item.constraints 
                                             |> List.ofSeq
                                             |> List.map Constraint.ToDomain}

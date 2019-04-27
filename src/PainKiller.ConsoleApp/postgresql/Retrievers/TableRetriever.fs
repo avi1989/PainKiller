@@ -124,7 +124,9 @@ let private loadColumnsForTable (conn:NpgsqlConnection) tableName schemaName =
                 position = ordinalPosition
                 ``type`` = mapDatabaseToDomain dataTypeStr charMaxLength
                 defaultValue = defaultVal
-                isNullable = isNullable}
+                isNullable = isNullable
+                tableName = tableName
+                schemaName = schemaName }
     ]
 
 let private loadConstraintsForTable (conn: NpgsqlConnection) tableName schemaName =

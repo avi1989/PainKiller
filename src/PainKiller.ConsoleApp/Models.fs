@@ -47,6 +47,8 @@ type Column = {
     ``type``: ColumnType;
     defaultValue: string option;
     isNullable: bool;
+    tableName: string
+    schemaName: string
 }
 
 type TableInfo = {

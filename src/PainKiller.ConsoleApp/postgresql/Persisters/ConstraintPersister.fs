@@ -20,8 +20,9 @@ let createConstraint (sqlConnection: NpgsqlConnection) table schema (con: TableC
 
 let createConstraintsForTable sqlConnection (table: TableInfo) =
     table.constraints
-    |> List.iter (createConstraint sqlConnection table.name table.schema)
+        |> List.iter (createConstraint sqlConnection table.name table.schema)
 
 let createConstraintsForTables sqlConnection (tables: TableInfo list) =
     tables
-    |> List.iter (createConstraintsForTable sqlConnection)
+        |> List.iter (createConstraintsForTable sqlConnection)
+    tables
