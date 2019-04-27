@@ -1,4 +1,4 @@
-﻿module PainKiller.ConsoleApp.PostgreSQL.Persister.SimpleScriptWriter
+﻿module PainKiller.ConsoleApp.PostgreSQL.Persisters.SimpleScriptWriter
 
 open PainKiller.ConsoleApp.Models
 open Npgsql;

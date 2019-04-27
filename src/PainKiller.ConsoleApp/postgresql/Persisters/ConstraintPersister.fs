@@ -1,4 +1,4 @@
-﻿module PainKiller.ConsoleApp.PostgreSQL.Persister.ConstraintPersister
+﻿module PainKiller.ConsoleApp.PostgreSQL.Persisters.ConstraintPersister
 
 open PainKiller.ConsoleApp.Models
 open Npgsql
@@ -16,12 +16,12 @@ let createConstraint (sqlConnection: NpgsqlConnection) table schema (con: TableC
     then sqlConnection.Open() |> ignore
     use command = sqlConnection.CreateCommand()
     command.CommandText <- constraintQuery
-    command.ExecuteNonQuery()
+    command.ExecuteNonQuery() |> ignore
 
 let createConstraintsForTable sqlConnection (table: TableInfo) =
     table.constraints
-    |> List.map (createConstraint sqlConnection table.name table.schema)
+    |> List.iter (createConstraint sqlConnection table.name table.schema)
 
 let createConstraintsForTables sqlConnection (tables: TableInfo list) =
     tables
-    |> List.map (createConstraintsForTable sqlConnection)
+    |> List.iter (createConstraintsForTable sqlConnection)

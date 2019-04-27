@@ -1,4 +1,4 @@
-﻿module PainKiller.ConsoleApp.PostgreSQL.Persister.UdtWriter
+﻿module PainKiller.ConsoleApp.PostgreSQL.Persisters.UdtWriter
 
 open Npgsql
 open System.Data
