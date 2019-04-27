@@ -16,7 +16,6 @@ type Models.ColumnType with
         | _ -> Models.TypeWithoutLength item
 
 [<CLIMutable>]
-[<XmlRoot("default")>]
 [<XmlType("default")>]
 type DefaultValue = {
     [<XmlAttribute>] 
@@ -34,7 +33,6 @@ type DefaultValue = {
         | None -> None
 
 [<CLIMutable>]
-[<XmlRoot("column")>]
 [<XmlType("column")>]
 type ColumnInfo = {
     [<XmlAttribute>] 
@@ -63,11 +61,54 @@ type ColumnInfo = {
           Models.Column.position = index 
           Models.Column.``type`` = Models.ColumnType.ToDomain(item.``type``)
           Models.Column.isNullable = item.isNullable }
-    
+
+[<CLIMutable>]
+[<XmlType("constraint")>]
+type Constraint = {
+    [<XmlAttribute>] 
+    ``type``: string
+    [<XmlAttribute>] 
+    name: string
+    [<XmlArray>]
+    [<XmlArrayItem("column")>]
+    columns : System.Collections.Generic.List<string>
+    [<XmlAttribute>] 
+    definition: string
+} with 
+    static member FromDomain (item: Models.TableConstraint) =
+        match item.``type`` with
+        | Models.TableConstraintType.PrimaryKey cols -> 
+                { ``type`` = "PrimaryKey"; 
+                  definition = null; 
+                  columns = cols |> List.toArray |> System.Collections.Generic.List<string>
+                  name = item.name }
+        | Models.TableConstraintType.Unique cols -> 
+                { ``type`` = "Unique"
+                  definition = null
+                  columns = cols |> List.toArray |> System.Collections.Generic.List<string>
+                  name = item.name }
+        | Models.TableConstraintType.Check def -> 
+                { ``type`` = "Check"; 
+                  definition = def; 
+                  columns = null; 
+                  name = item.name }
+
+    static member ToDomain (item: Constraint) =
+        let cols = if item.columns = null then List.empty else item.columns |> List.ofSeq
+        match item.``type`` with
+        | "PrimaryKey" -> 
+            { Models.TableConstraint.name = item.name
+              Models.TableConstraint.``type`` = Models.TableConstraintType.PrimaryKey cols }
+        | "Unique" ->
+            { Models.TableConstraint.name = item.name
+              Models.TableConstraint.``type`` = Models.TableConstraintType.Unique cols }
+        | "Check" ->
+            { Models.TableConstraint.name = item.name
+              Models.TableConstraint.``type`` = Models.TableConstraintType.Check item.definition }
+        | _ -> raise (System.Exception("Unknown constraint type"))
 
 [<CLIMutable>]
 [<XmlRoot("table")>]
-[<XmlType("table")>]
 type TableInfo = {
     [<XmlAttribute>] 
     name: string;
@@ -77,6 +118,9 @@ type TableInfo = {
 
     [<XmlArray>]
     columns: System.Collections.Generic.List<ColumnInfo>
+
+    [<XmlArray>]
+    constraints: System.Collections.Generic.List<Constraint>
 } with 
     static member FromDomain engine (item: Models.TableInfo) =
         { name = item.name
@@ -85,17 +129,23 @@ type TableInfo = {
                     |> List.sortBy (fun x -> x.position) 
                     |> List.map (ColumnInfo.FromDomain engine)
                     |> List.toArray 
-                    |> System.Collections.Generic.List<ColumnInfo> }
+                    |> System.Collections.Generic.List<ColumnInfo> 
+          constraints = item.constraints
+                        |> List.map (Constraint.FromDomain)
+                        |> List.toArray
+                        |> System.Collections.Generic.List<Constraint> }
           
     static member ToDomain engine (item: TableInfo) =
         { Models.TableInfo.name = item.name
           Models.TableInfo.schema = item.schema 
           Models.TableInfo.columns = item.columns
                                         |> List.ofSeq
-                                        |> List.mapi (fun i x -> ColumnInfo.ToDomain i engine x) }
+                                        |> List.mapi (fun i x -> ColumnInfo.ToDomain i engine x) 
+          Models.TableInfo.constraints = item.constraints 
+                                            |> List.ofSeq
+                                            |> List.map Constraint.ToDomain}
 
 [<CLIMutable>]
-[<XmlRoot("attribute")>]
 [<XmlType("attribute")>]
 type Attribute = {
     [<XmlAttribute>] 
@@ -120,7 +170,6 @@ type Attribute = {
 
 [<CLIMutable>]
 [<XmlRoot("type")>]
-[<XmlType("type")>]
 type UserDefinedType = {
     [<XmlAttribute>] 
     name: string

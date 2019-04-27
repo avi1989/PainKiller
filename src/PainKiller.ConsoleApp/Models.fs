@@ -4,6 +4,20 @@ type ColumnType =
     | TypeWithoutLength of string
     | TypeWithLength of string * int
 
+type TableConstraintType =
+    | PrimaryKey of string list
+    | Unique of string list
+    | Check of string
+
+type TableConstraint = {
+    name: string
+    ``type``: TableConstraintType
+}
+
+type ReferentialConstraint = {
+    name: string
+}
+
 type UdtAttributes = {
     name: string;
     position: int;
@@ -35,6 +49,7 @@ type TableInfo = {
     name: string;
     schema: string;
     columns: Column list;
+    constraints: TableConstraint list;
 }
 
 type Database = {
