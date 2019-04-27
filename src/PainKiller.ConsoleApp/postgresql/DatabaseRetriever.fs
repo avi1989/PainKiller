@@ -15,6 +15,7 @@ type DatabaseRetriever() =
                 views = ViewRetriever.loadViews connection
                 procedures = ProcedureRetriever.loadProcedures connection
                 userDefinedTypes = UdtRetriever.loadUserDefinedTypes connection connectionFactory
+                schemas = SchemaRetriever.getSchemas connection
             }
 
 

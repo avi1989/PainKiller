@@ -16,6 +16,15 @@ type Models.ColumnType with
         | _ -> Models.TypeWithoutLength item
 
 [<CLIMutable>]
+[<XmlRoot("schema")>]
+type Schema = {
+    [<XmlAttribute>]
+    name: string
+} with
+    static member ToDomain (schema: Schema) =
+        schema.name
+
+[<CLIMutable>]
 [<XmlType("default")>]
 type DefaultValue = {
     [<XmlAttribute>] 
@@ -69,29 +78,52 @@ type Constraint = {
     ``type``: string
     [<XmlAttribute>] 
     name: string
-    [<XmlArray>]
+    [<XmlArray(IsNullable=false)>]
     [<XmlArrayItem("column")>]
-    columns : System.Collections.Generic.List<string>
+    columns : string[]
     [<XmlAttribute>] 
     definition: string
+    [<XmlArray(IsNullable=false)>]
+    destinationColumns: string[]
+    [<XmlAttribute>]
+    destinationTable: string
+    [<XmlAttribute>]
+    destinationSchema: string
 } with 
     static member FromDomain (item: Models.TableConstraint) =
         match item.``type`` with
         | Models.TableConstraintType.PrimaryKey cols -> 
                 { ``type`` = "PrimaryKey"; 
                   definition = null; 
-                  columns = cols |> List.toArray |> System.Collections.Generic.List<string>
-                  name = item.name }
+                  columns = cols |> List.toArray
+                  name = item.name
+                  destinationColumns = null
+                  destinationTable = null
+                  destinationSchema = null }
         | Models.TableConstraintType.Unique cols -> 
                 { ``type`` = "Unique"
                   definition = null
-                  columns = cols |> List.toArray |> System.Collections.Generic.List<string>
-                  name = item.name }
+                  columns = cols |> List.toArray
+                  name = item.name 
+                  destinationColumns = null
+                  destinationTable = null
+                  destinationSchema = null }
         | Models.TableConstraintType.Check def -> 
                 { ``type`` = "Check"; 
                   definition = def; 
                   columns = null; 
-                  name = item.name }
+                  name = item.name 
+                  destinationColumns = null
+                  destinationTable = null
+                  destinationSchema = null }
+        | Models.TableConstraintType.ForeignKey def ->
+                { ``type`` = "ForeignKey"; 
+                  definition = null; 
+                  columns = def.sourceColumns |> List.toArray; 
+                  name = item.name 
+                  destinationColumns = def.destinationColumns |> List.toArray
+                  destinationTable = def.destinationTable
+                  destinationSchema = def.destinationSchema }
 
     static member ToDomain (item: Constraint) =
         let cols = if item.columns = null then List.empty else item.columns |> List.ofSeq
@@ -105,6 +137,13 @@ type Constraint = {
         | "Check" ->
             { Models.TableConstraint.name = item.name
               Models.TableConstraint.``type`` = Models.TableConstraintType.Check item.definition }
+        | "ForeignKey" ->
+            let foreignKeyType = { Models.ReferentialConstraint.destinationColumns = item.destinationColumns |> List.ofSeq
+                                   Models.ReferentialConstraint.destinationSchema = item.destinationSchema
+                                   Models.ReferentialConstraint.destinationTable = item.destinationTable
+                                   Models.ReferentialConstraint.sourceColumns = item.columns |> List.ofSeq }
+            { Models.TableConstraint.name = item.name
+              Models.TableConstraint.``type`` = Models.TableConstraintType.ForeignKey foreignKeyType }
         | _ -> raise (System.Exception("Unknown constraint type"))
 
 [<CLIMutable>]

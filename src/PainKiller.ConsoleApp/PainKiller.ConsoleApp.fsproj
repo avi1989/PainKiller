@@ -10,9 +10,12 @@
     <Compile Include="Models.fs" />
     <Compile Include="Contracts\IDatabaseRetriever.fs" />
     <Compile Include="postgresql\ColumnTypeMapper.fs" />
+    <Compile Include="postgresql\Persister\SchemaWriter.fs" />
+    <Compile Include="postgresql\Persister\ConstraintPersister.fs" />
     <Compile Include="postgresql\Persister\SimpleScriptWriter.fs" />
     <Compile Include="postgresql\Persister\UdtWriter.fs" />
     <Compile Include="postgresql\Persister\TableWriter.fs" />
+    <Compile Include="postgresql\Retrievers\SchemaRetriever.fs" />
     <Compile Include="postgresql\Retrievers\UdtRetriever.fs" />
     <Compile Include="postgresql\Retrievers\ProcedureRetriever.fs" />
     <Compile Include="postgresql\Retrievers\ViewRetriever.fs" />
@@ -22,9 +25,11 @@
     <Compile Include="FileSystem\Dto.fs" />
     <Compile Include="FileSystem\Readers\UdtReader.fs" />
     <Compile Include="FileSystem\Readers\SimpleScriptReader.fs" />
+    <Compile Include="FileSystem\Readers\SchemaReader.fs" />
     <Compile Include="FileSystem\Readers\TableReader.fs" />
     <Compile Include="FileSystem\Reader.fs" />
     <Compile Include="FileSystem\Writers\XmlWriter.fs" />
+    <Compile Include="FileSystem\Writers\SchemaWriter.fs" />
     <Compile Include="FileSystem\Writers\TableWriter.fs" />
     <Compile Include="FileSystem\Writers\UdtWriter.fs" />
     <Compile Include="FileSystem\Writers\SimpleScriptWriter.fs" />

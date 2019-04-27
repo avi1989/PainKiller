@@ -1,5 +1,12 @@
 ﻿namespace PainKiller.ConsoleApp.Models
 
+type ReferentialConstraint = {
+    sourceColumns: string list
+    destinationColumns: string list
+    destinationSchema: string
+    destinationTable: string
+}
+
 type ColumnType =
     | TypeWithoutLength of string
     | TypeWithLength of string * int
@@ -8,14 +15,11 @@ type TableConstraintType =
     | PrimaryKey of string list
     | Unique of string list
     | Check of string
+    | ForeignKey of ReferentialConstraint
 
 type TableConstraint = {
     name: string
     ``type``: TableConstraintType
-}
-
-type ReferentialConstraint = {
-    name: string
 }
 
 type UdtAttributes = {
@@ -58,4 +62,5 @@ type Database = {
     views: SimpleDatabaseItem list
     procedures: SimpleDatabaseItem list
     userDefinedTypes: UdtInfo list
+    schemas: string list
 }

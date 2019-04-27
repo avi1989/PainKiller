@@ -8,4 +8,5 @@ let readFromFileSystem basePath engine =
       functions = readSimpleScripts "functions"
       views = readSimpleScripts "views"
       procedures = readSimpleScripts "procedures"
-      userDefinedTypes = Readers.UdtReader.readUdts engine basePath }
+      userDefinedTypes = Readers.UdtReader.readUdts engine basePath 
+      schemas = Readers.SchemaReader.readSchemas basePath }
