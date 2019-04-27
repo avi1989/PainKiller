@@ -6,4 +6,4 @@ type IDatabaseRetriever =
     abstract member GetDatabase: string -> Database
 
 type IDatabasePersister =
-    abstract member PersistDatabase: string -> Database -> unit
+    abstract member PersistDatabase: string -> Database -> Database -> unit

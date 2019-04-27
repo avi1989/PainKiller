@@ -95,7 +95,7 @@ WHERE c.contype = 'f' ORDER BY 1 ) as T
 WHERE t.from_table = @tableName AND t.from_schema = @schemaName
 """
 
-let loadColumnsForTable (conn:NpgsqlConnection) tableName schemaName =
+let private loadColumnsForTable (conn:NpgsqlConnection) tableName schemaName =
     if (conn.State <> ConnectionState.Open)
     then conn.Open() |> ignore
 
@@ -127,7 +127,7 @@ let loadColumnsForTable (conn:NpgsqlConnection) tableName schemaName =
                 isNullable = isNullable}
     ]
 
-let loadConstraintsForTable (conn: NpgsqlConnection) tableName schemaName =
+let private loadConstraintsForTable (conn: NpgsqlConnection) tableName schemaName =
     if (conn.State <> ConnectionState.Open)
     then conn.Open() |> ignore
 
@@ -148,8 +148,7 @@ let loadConstraintsForTable (conn: NpgsqlConnection) tableName schemaName =
                 ``type`` = constraintType }
     ]
 
-    
-let loadForeignKeysForTable (conn: NpgsqlConnection) tableName schemaName =
+let private loadForeignKeysForTable (conn: NpgsqlConnection) tableName schemaName =
     if (conn.State <> ConnectionState.Open)
     then conn.Open() |> ignore
 
