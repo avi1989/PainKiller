@@ -2,7 +2,7 @@
 
 open Npgsql;
 open System.Data;
-open ColumnTypeMapper
+open PainKiller.ConsoleApp.PostgreSQL.ColumnTypeMapper
 open PainKiller.ConsoleApp.Models
 
 let getTableQuery = """
@@ -14,7 +14,7 @@ AND table_type = 'BASE TABLE';
 """
 
 let getColumnQuery = """
-SELECT column_name, ordinal_position, column_default, is_nullable, data_type, character_maximum_length 
+SELECT column_name, ordinal_position, column_default, is_nullable, udt_name::regtype::text as data_type, character_maximum_length 
 FROM information_schema.columns
 WHERE table_name = @tableName AND table_schema = @schemaName
 """
@@ -46,7 +46,7 @@ let loadColumnsForTable (conn:NpgsqlConnection) tableName schemaName =
 
         yield { name = reader.GetString(reader.GetOrdinal("column_name"))
                 position = ordinalPosition
-                ``type`` = mapColumnType dataTypeStr charMaxLength
+                ``type`` = mapDatabaseToDomain dataTypeStr charMaxLength
                 defaultValue = defaultVal
                 isNullable = isNullable}
     ]

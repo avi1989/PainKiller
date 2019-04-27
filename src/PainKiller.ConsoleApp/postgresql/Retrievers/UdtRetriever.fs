@@ -2,7 +2,7 @@
 
 open Npgsql
 open System.Data
-open ColumnTypeMapper
+open PainKiller.ConsoleApp.PostgreSQL.ColumnTypeMapper
 open PainKiller.ConsoleApp.Models
 
 
@@ -44,7 +44,7 @@ let loadColumnsForUserDefinedType (connection: NpgsqlConnection) schema column =
                             else Some (reader.GetInt32(reader.GetOrdinal("character_maximum_length")))
         yield { name = reader.GetString(reader.GetOrdinal("attribute_name"))
                 position = ordinalPosition
-                ``type`` = mapColumnType dataTypeStr charMaxLength
+                ``type`` = mapDatabaseToDomain dataTypeStr charMaxLength
                 isNullable = isNullable}
     ]
 
