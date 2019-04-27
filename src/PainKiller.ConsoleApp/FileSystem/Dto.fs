@@ -2,6 +2,18 @@
 
 open System.Xml.Serialization
 open PainKiller.ConsoleApp
+open PainKiller.ConsoleApp.ActivePatterns
+
+type Models.ColumnType with
+    member this.FromDomain() =
+        match this with
+        | Models.TypeWithoutLength s -> s
+        | Models.TypeWithLength (s, l) -> sprintf "%s(%i)" s l
+
+    static member ToDomain (item: string) =
+        match item with
+        | RegexMatch "([A-Za-z]*)\((\d+)\)" [dType; tPrecision] -> Models.TypeWithLength (dType, (tPrecision |> int))
+        | _ -> Models.TypeWithoutLength item
 
 [<CLIMutable>]
 [<XmlRoot("default")>]
@@ -35,7 +47,7 @@ type ColumnInfo = {
 } with 
     static member FromDomain engine (item: Models.Column) =
         { name = item.name
-          ``type`` = item.``type``
+          ``type`` = item.``type``.FromDomain()
           defaults = DefaultValue.FromDomain engine item.defaultValue
           isNullable = item.isNullable }
 
@@ -49,7 +61,7 @@ type ColumnInfo = {
         { Models.Column.name = item.name
           Models.Column.defaultValue = defaultValue 
           Models.Column.position = index 
-          Models.Column.``type`` = item.``type`` 
+          Models.Column.``type`` = Models.ColumnType.ToDomain(item.``type``)
           Models.Column.isNullable = item.isNullable }
     
 
@@ -97,14 +109,14 @@ type Attribute = {
 } with
     static member FromDomain (item: Models.UdtAttributes) =
         { name = item.name
-          ``type`` = item.``type``
+          ``type`` = item.``type``.FromDomain()
           isNullable = item.isNullable }
 
     static member ToDomain index (item: Attribute) =
         { Models.UdtAttributes.name = item.name
           Models.UdtAttributes.isNullable = item.isNullable
           Models.UdtAttributes.position = index
-          Models.UdtAttributes.``type`` = item.``type`` }
+          Models.UdtAttributes.``type`` = Models.ColumnType.ToDomain(item.``type``) }
 
 [<CLIMutable>]
 [<XmlRoot("type")>]

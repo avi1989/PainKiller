@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="ActivePatterns.fs" />
     <Compile Include="Models.fs" />
     <Compile Include="Contracts\IDatabaseRetriever.fs" />
     <Compile Include="postgresql\Retrievers\ColumnTypeMapper.fs" />
@@ -16,7 +17,10 @@
     <Compile Include="postgresql\Retrievers\TableRetriever.fs" />
     <Compile Include="postgresql\DatabaseRetriever.fs" />
     <Compile Include="FileSystem\Dto.fs" />
+    <Compile Include="FileSystem\Readers\UdtReader.fs" />
+    <Compile Include="FileSystem\Readers\SimpleScriptReader.fs" />
     <Compile Include="FileSystem\Readers\TableReader.fs" />
+    <Compile Include="FileSystem\Reader.fs" />
     <Compile Include="FileSystem\Writers\XmlWriter.fs" />
     <Compile Include="FileSystem\Writers\TableWriter.fs" />
     <Compile Include="FileSystem\Writers\UdtWriter.fs" />

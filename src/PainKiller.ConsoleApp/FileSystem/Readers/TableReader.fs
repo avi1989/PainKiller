@@ -13,7 +13,7 @@ let private readTable engine filePath =
 
 let readTables engine basePath =
     let filePath = sprintf "%s/%s" basePath "tables"
-    let files = System.IO.Directory.EnumerateFiles(filePath, "*.xml") 
-                |> List.ofSeq
-                |> List.map (readTable engine)
-    ""
+    System.IO.Directory.EnumerateFiles(filePath, "*.xml") 
+        |> List.ofSeq
+        |> List.map (readTable engine)
+                

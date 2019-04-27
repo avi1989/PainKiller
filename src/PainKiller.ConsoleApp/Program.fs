@@ -13,6 +13,6 @@ let main argv =
     let databaseRetriever = new DatabaseRetriever() :> IDatabaseRetriever
     let database = databaseRetriever.GetDatabase connString
     
-    PainKiller.ConsoleApp.FileSystem.Readers.TableReader.readTables "postgres" basePath |> ignore
+    let result = PainKiller.ConsoleApp.FileSystem.Reader.readFromFileSystem basePath "postgres"
     //database |> Writer.writeToFileSystem basePath "engine"
     0

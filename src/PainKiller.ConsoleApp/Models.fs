@@ -7,7 +7,7 @@ type ColumnType =
 type UdtAttributes = {
     name: string;
     position: int;
-    ``type``: string;
+    ``type``: ColumnType;
     isNullable: bool;
 }
 
@@ -26,7 +26,7 @@ type SimpleDatabaseItem = {
 type Column = {
     name: string;
     position: int;
-    ``type``: string;
+    ``type``: ColumnType;
     defaultValue: string option;
     isNullable: bool;
 }

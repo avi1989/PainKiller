@@ -42,12 +42,9 @@ let loadColumnsForUserDefinedType (connection: NpgsqlConnection) schema column =
         let charMaxLength = if reader.IsDBNull(reader.GetOrdinal("character_maximum_length")) 
                             then None 
                             else Some (reader.GetInt32(reader.GetOrdinal("character_maximum_length")))
-        let dataType = match charMaxLength with
-                        | None -> ColumnType.TypeWithoutLength dataTypeStr
-                        | Some maxLen -> ColumnType.TypeWithLength (dataTypeStr, maxLen)
         yield { name = reader.GetString(reader.GetOrdinal("attribute_name"))
                 position = ordinalPosition
-                ``type`` = mapColumnType dataType
+                ``type`` = mapColumnType dataTypeStr charMaxLength
                 isNullable = isNullable}
     ]
 

@@ -3,20 +3,22 @@
 open PainKiller.ConsoleApp.Models
 open System
 
-let mapColumnsWithoutLength column =
-    match column with
-    | "text" | "integer" | "bit" | "boolean" | "date" | "json" | "jsonb" | "smallint" | "bigint" -> column
-    | "timestamp without time zone" -> "timestamptz"
-    | "timestamp" | "timestamp with time zone" -> "timestamp"
-    | _ -> column
+let typeMap = 
+    Map.empty
+    |> Map.add "timestamp without time zone" "timestampz"
+    |> Map.add "timestamp with time zone" "timestamp"
+    |> Map.add "uuid" "guid"
+    |> Map.add "character varying" "varchar"
 
-let mapColumnWithLength col len =
-    match col with
-    | "character varying" -> sprintf "varchar(%i)" len
-    | "char" -> sprintf "char(%i)" len
-    | _ -> raise (Exception "Unknown Type")
+let mapColumns columnType =
+    let mapping = typeMap |> Map.tryFind columnType
+    match mapping with
+    | Some mapping -> mapping
+    | None -> columnType
 
-let mapColumnType col =
-    match col with
-    | TypeWithoutLength a -> mapColumnsWithoutLength a 
-    | TypeWithLength (name, len) -> mapColumnWithLength name len
+let mapColumnType dataType charMaxLength =
+    let newColType = mapColumns dataType
+
+    match charMaxLength with
+    | None -> TypeWithoutLength newColType
+    | Some a -> TypeWithLength (newColType, a)

@@ -30,22 +30,23 @@ let loadColumnsForTable (conn:NpgsqlConnection) tableName schemaName =
     use reader = command.ExecuteReader()
     [while reader.Read() do
         let ordinalPosition = reader.GetInt32(reader.GetOrdinal("ordinal_position"))
+
         let defaultVal = if reader.IsDBNull(reader.GetOrdinal("column_default"))
                             then None
                             else Some (reader.GetString(reader.GetOrdinal("column_default")))
+
         let isNullable = if reader.GetString(reader.GetOrdinal("is_nullable")) = "YES" 
                             then true 
                             else false
         let dataTypeStr = reader.GetString(reader.GetOrdinal("data_type"))
+
         let charMaxLength = if reader.IsDBNull(reader.GetOrdinal("character_maximum_length")) 
                             then None 
                             else Some (reader.GetInt32(reader.GetOrdinal("character_maximum_length")))
-        let dataType = match charMaxLength with
-                        | None -> ColumnType.TypeWithoutLength dataTypeStr
-                        | Some maxLen -> ColumnType.TypeWithLength (dataTypeStr, maxLen)
+
         yield { name = reader.GetString(reader.GetOrdinal("column_name"))
                 position = ordinalPosition
-                ``type`` = mapColumnType dataType
+                ``type`` = mapColumnType dataTypeStr charMaxLength
                 defaultValue = defaultVal
                 isNullable = isNullable}
     ]
