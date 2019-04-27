@@ -1,4 +1,4 @@
-﻿module PainKiller.ConsoleApp.FileSystem.Writer.SimpleScriptWriter
+﻿module PainKiller.ConsoleApp.FileSystem.Writers.SimpleScriptWriter
 
 open System.IO
 open PainKiller.ConsoleApp

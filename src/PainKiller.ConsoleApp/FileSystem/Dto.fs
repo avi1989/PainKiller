@@ -74,6 +74,13 @@ type TableInfo = {
                     |> List.map (ColumnInfo.FromDomain engine)
                     |> List.toArray 
                     |> System.Collections.Generic.List<ColumnInfo> }
+          
+    static member ToDomain engine (item: TableInfo) =
+        { Models.TableInfo.name = item.name
+          Models.TableInfo.schema = item.schema 
+          Models.TableInfo.columns = item.columns
+                                        |> List.ofSeq
+                                        |> List.mapi (fun i x -> ColumnInfo.ToDomain i engine x) }
 
 [<CLIMutable>]
 [<XmlRoot("attribute")>]

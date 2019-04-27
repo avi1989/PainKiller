@@ -16,10 +16,12 @@
     <Compile Include="postgresql\Retrievers\TableRetriever.fs" />
     <Compile Include="postgresql\DatabaseRetriever.fs" />
     <Compile Include="FileSystem\Dto.fs" />
+    <Compile Include="FileSystem\Readers\TableReader.fs" />
     <Compile Include="FileSystem\Writers\XmlWriter.fs" />
     <Compile Include="FileSystem\Writers\TableWriter.fs" />
     <Compile Include="FileSystem\Writers\UdtWriter.fs" />
     <Compile Include="FileSystem\Writers\SimpleScriptWriter.fs" />
+    <Compile Include="FileSystem\Writer.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

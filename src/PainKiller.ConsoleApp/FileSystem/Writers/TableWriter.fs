@@ -1,4 +1,4 @@
-﻿module PainKiller.ConsoleApp.FileSystem.Writer.TableWriter
+﻿module PainKiller.ConsoleApp.FileSystem.Writers.TableWriter
 
 open PainKiller.ConsoleApp
 open PainKiller.ConsoleApp.FileSystem

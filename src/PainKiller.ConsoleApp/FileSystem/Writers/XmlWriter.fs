@@ -1,4 +1,4 @@
-﻿module PainKiller.ConsoleApp.FileSystem.Writer.XmlWriter
+﻿module PainKiller.ConsoleApp.FileSystem.Writers.XmlWriter
 
 open System.IO
 open System.Xml.Serialization

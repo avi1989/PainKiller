@@ -3,6 +3,7 @@
 open PainKiller.ConsoleApp
 open PainKiller.ConsoleApp.PostgreSQL
 open PainKiller.ConsoleApp.Contracts
+open PainKiller.ConsoleApp.FileSystem
 
 [<EntryPoint>]
 let main argv =
@@ -11,10 +12,7 @@ let main argv =
     let connString = "User ID=postgres;Password=password;Host=localhost;Port=5432;Database=coverme_encounters;";
     let databaseRetriever = new DatabaseRetriever() :> IDatabaseRetriever
     let database = databaseRetriever.GetDatabase connString
-
-    database.tables |> FileSystem.Writer.TableWriter.writeToFileSystem "postgres" basePath |> ignore
-    database.functions |> FileSystem.Writer.SimpleScriptWriter.writeToFileSystem basePath "functions" |> ignore
-    database.views |> FileSystem.Writer.SimpleScriptWriter.writeToFileSystem basePath "views" |> ignore
-    database.procedures |> FileSystem.Writer.SimpleScriptWriter.writeToFileSystem basePath "procedures" |> ignore
-    database.userDefinedTypes |> FileSystem.Writer.UdtWriter.writeToFileSystem basePath |> ignore
+    
+    PainKiller.ConsoleApp.FileSystem.Readers.TableReader.readTables "postgres" basePath |> ignore
+    //database |> Writer.writeToFileSystem basePath "engine"
     0

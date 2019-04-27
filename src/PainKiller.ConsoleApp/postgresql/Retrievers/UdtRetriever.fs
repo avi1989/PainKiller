@@ -53,7 +53,8 @@ let loadColumnsForUserDefinedType (connection: NpgsqlConnection) schema column =
 
 let loadUserDefinedTypes (connection: NpgsqlConnection) connectionFactory = 
     use attributeConnection = connectionFactory()
-    connection.Open()
+    if (connection.State <> System.Data.ConnectionState.Open) 
+    then connection.Open() |> ignore
     use command = connection.CreateCommand()
     command.CommandText <- getUserDefinedTypesQuery
     use reader = command.ExecuteReader()

@@ -20,7 +20,8 @@ CREATE OR REPLACE VIEW %s.%s AS (
 )""" schema name definition
 
 let loadViews (connection: NpgsqlConnection) =
-    connection.Open()
+    if (connection.State <> System.Data.ConnectionState.Open) 
+    then connection.Open() |> ignore
     use command = connection.CreateCommand()
     command.CommandText <- getViewQuery
     use reader = command.ExecuteReader()
