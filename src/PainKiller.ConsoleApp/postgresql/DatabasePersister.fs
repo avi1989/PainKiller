@@ -26,9 +26,6 @@ module Helpers =
 
     let getRemovedColumns tablesInDatabase tablesInFileSystem =  getNewlyAddedColumns tablesInFileSystem tablesInDatabase
 
-    let getColumnsWhereTypeChanged =
-        true
-
     let getColumnsWhereDefaultAdded =
         true
 
@@ -46,10 +43,15 @@ type DatabasePersister() =
         let columnsWhereDataTypeChanged = pairedColumnsBetweenFsAndDbWithoutNulls 
                                             |> List.filter (fun (fs, db) -> fs.``type`` <> db.``type``)
                                             |> List.map (fun (fs, db) -> fs)
+        let columnsWhereDefaultChanged = pairedColumnsBetweenFsAndDbWithoutNulls 
+                                            |> List.filter (fun (fs, db) -> fs.defaultValue <> db.defaultValue)
+                                            |> List.map (fun (fs, db) -> fs)
+
 
         columnsToBeAdded |> TableWriter.addColumns connection fsTable.schema fsTable.name
         columnsToBeRemoved |> TableWriter.dropColumns connection fsTable.schema fsTable.name
         columnsWhereDataTypeChanged |> TableWriter.alterColumnTypes connection fsTable.schema fsTable.name
+        columnsWhereDefaultChanged |> TableWriter.alterColumnDefaults connection fsTable.schema fsTable.name
         "" |> ignore
 
     let alterTables connection (pairedTables: (TableInfo * TableInfo) list) = 
@@ -59,11 +61,11 @@ type DatabasePersister() =
     let persistTables connection databaseTables fileSystemTables =
         let newTables = Helpers.getNewTables databaseTables fileSystemTables
         let pairedTables = ListHelpers.pairListsWithoutUnpairedItems (fun a b -> a.name = b.name && a.schema = b.schema) fileSystemTables databaseTables
+        newTables |> (TableWriter.createTables connection >> (ConstraintPersister.createConstraintsForTables connection)) |> ignore
         alterTables connection pairedTables |> ignore
         //let tablesWithAddedColumns = Helpers.getNewlyAddedColumns databaseTables fileSystemTables
         //let tablesWithRemovedColumns = Helpers.getRemovedColumns databaseTables fileSystemTables
 
-        //newTables |> (TableWriter.createTables connection >> (ConstraintPersister.createConstraintsForTables connection)) |> ignore
         //tablesWithAddedColumns |> List.iter (fun (table, addedCols) -> TableWriter.addColumns connection table.schema table.name addedCols)
         //tablesWithRemovedColumns |> List.iter (fun (table, removedCols) -> TableWriter.dropColumns connection table.schema table.name removedCols)
         "" |> ignore

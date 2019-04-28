@@ -14,7 +14,7 @@ let main argv =
     //let connString = "User ID=postgres;Password=password;Host=localhost;Port=5432;Database=coverme_encounters;";
     let databaseRetriever = new DatabaseRetriever() :> IDatabaseRetriever
     let database = databaseRetriever.GetDatabase connString
-    //database |> Writer.writeToFileSystem basePath "engine"
+    //database |> Writer.writeToFileSystem basePath "postgres"
 
     //PENDING
     // TABLE DEFAULTS (SHould be easy)

@@ -9,7 +9,7 @@ open System.Text
 let private getColString (col: Column) =
     let dbColType = ColumnTypeMapper.mapDomainToDatabase col.``type``
     let defaultVal = match col.defaultValue with
-                     | Some value -> value
+                     | Some value -> sprintf "DEFAULT %s" value
                      | None -> ""
 
     sprintf "\"%s\" %s %s" col.name dbColType defaultVal
@@ -81,4 +81,23 @@ let alterColumnTypes (sqlConnection: NpgsqlConnection) schema table columns =
         |> List.iter(fun (col: Column) -> 
                         let query = buildQueryForTable col.name (ColumnTypeMapper.mapDomainToDatabase col.``type``)
                         setConn()
+                        executeQuery query )
+
+
+let alterColumnDefaults (sqlConnection: NpgsqlConnection) schema table columns =
+    let buildQueryForTable = sprintf "ALTER TABLE %s.%s ALTER COLUMN \"%s\" %s" schema table
+    let setConn ()= 
+        if sqlConnection.State <> ConnectionState.Open
+        then sqlConnection.Open() |> ignore
+
+    let executeQuery query =
+        use command = sqlConnection.CreateCommand()
+        command.CommandText <- query
+        command.ExecuteNonQuery() |> ignore
+    columns
+        |> List.iter(fun (col: Column) -> 
+                        setConn()
+                        let query = match col.defaultValue with
+                                    | Some s -> buildQueryForTable col.name (sprintf "SET DEFAULT %s" s)
+                                    | None -> buildQueryForTable col.name "DROP DEFAULT"
                         executeQuery query )
