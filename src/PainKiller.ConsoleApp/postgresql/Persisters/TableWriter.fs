@@ -36,7 +36,7 @@ let createTables sqlConnection tables =
     tables
 
 let addColumns (sqlConnection: NpgsqlConnection) schema table columns =
-    let buildQueryForTable = sprintf "ALTER TABLE %s.%s ADD COLUMN %s" schema table
+    let buildQueryForTable = sprintf "ALTER TABLE %s.%s ADD COLUMN \"%s\"" schema table
     let setConn ()= 
         if sqlConnection.State <> ConnectionState.Open
         then sqlConnection.Open() |> ignore
@@ -52,7 +52,7 @@ let addColumns (sqlConnection: NpgsqlConnection) schema table columns =
                         executeQuery query )
 
 let dropColumns (sqlConnection: NpgsqlConnection) schema table columns =
-    let buildQueryForTable = sprintf "ALTER TABLE %s.%s DROP COLUMN %s" schema table
+    let buildQueryForTable = sprintf "ALTER TABLE %s.%s DROP COLUMN \"%s\"" schema table
     let setConn ()= 
         if sqlConnection.State <> ConnectionState.Open
         then sqlConnection.Open() |> ignore
@@ -64,5 +64,21 @@ let dropColumns (sqlConnection: NpgsqlConnection) schema table columns =
     columns
         |> List.iter(fun (col: Column) -> 
                         let query = buildQueryForTable col.name
+                        setConn()
+                        executeQuery query )
+
+let alterColumnTypes (sqlConnection: NpgsqlConnection) schema table columns =
+    let buildQueryForTable = sprintf "ALTER TABLE %s.%s ALTER COLUMN \"%s\" SET DATA TYPE %s" schema table
+    let setConn ()= 
+        if sqlConnection.State <> ConnectionState.Open
+        then sqlConnection.Open() |> ignore
+
+    let executeQuery query =
+        use command = sqlConnection.CreateCommand()
+        command.CommandText <- query
+        command.ExecuteNonQuery() |> ignore
+    columns
+        |> List.iter(fun (col: Column) -> 
+                        let query = buildQueryForTable col.name (ColumnTypeMapper.mapDomainToDatabase col.``type``)
                         setConn()
                         executeQuery query )

@@ -37,14 +37,35 @@ module Helpers =
 
 
 type DatabasePersister() =
+    let alterTable connection (fsTable, dbTable) =
+        let pairedColumnsBetweenFsAndDb = ListHelpers.pairLists (fun (x: Column) (y: Column) -> x.name = y.name) fsTable.columns dbTable.columns
+        let pairedColumnsBetweenDbAndFs = ListHelpers.pairLists (fun (x: Column) (y: Column) -> x.name = y.name) dbTable.columns fsTable.columns
+        let pairedColumnsBetweenFsAndDbWithoutNulls = pairedColumnsBetweenFsAndDb |> ListHelpers.removeUnpairedItems
+        let columnsToBeAdded = pairedColumnsBetweenFsAndDb |> List.filter (fun (fs, db) -> db.IsNone) |> List.map (fun (fs, db) -> fs)
+        let columnsToBeRemoved = pairedColumnsBetweenDbAndFs |> List.filter (fun (db, fs) -> fs.IsNone) |> List.map (fun (db, fs) -> db)
+        let columnsWhereDataTypeChanged = pairedColumnsBetweenFsAndDbWithoutNulls 
+                                            |> List.filter (fun (fs, db) -> fs.``type`` <> db.``type``)
+                                            |> List.map (fun (fs, db) -> fs)
+
+        columnsToBeAdded |> TableWriter.addColumns connection fsTable.schema fsTable.name
+        columnsToBeRemoved |> TableWriter.dropColumns connection fsTable.schema fsTable.name
+        columnsWhereDataTypeChanged |> TableWriter.alterColumnTypes connection fsTable.schema fsTable.name
+        "" |> ignore
+
+    let alterTables connection (pairedTables: (TableInfo * TableInfo) list) = 
+        pairedTables |> List.iter (alterTable connection)
+        ""
+
     let persistTables connection databaseTables fileSystemTables =
         let newTables = Helpers.getNewTables databaseTables fileSystemTables
-        let tablesWithAddedColumns = Helpers.getNewlyAddedColumns databaseTables fileSystemTables
-        let tablesWithRemovedColumns = Helpers.getRemovedColumns databaseTables fileSystemTables
+        let pairedTables = ListHelpers.pairListsWithoutUnpairedItems (fun a b -> a.name = b.name && a.schema = b.schema) fileSystemTables databaseTables
+        alterTables connection pairedTables |> ignore
+        //let tablesWithAddedColumns = Helpers.getNewlyAddedColumns databaseTables fileSystemTables
+        //let tablesWithRemovedColumns = Helpers.getRemovedColumns databaseTables fileSystemTables
 
-        newTables |> (TableWriter.createTables connection >> (ConstraintPersister.createConstraintsForTables connection)) |> ignore
-        tablesWithAddedColumns |> List.iter (fun (table, addedCols) -> TableWriter.addColumns connection table.schema table.name addedCols)
-        tablesWithRemovedColumns |> List.iter (fun (table, removedCols) -> TableWriter.dropColumns connection table.schema table.name removedCols)
+        //newTables |> (TableWriter.createTables connection >> (ConstraintPersister.createConstraintsForTables connection)) |> ignore
+        //tablesWithAddedColumns |> List.iter (fun (table, addedCols) -> TableWriter.addColumns connection table.schema table.name addedCols)
+        //tablesWithRemovedColumns |> List.iter (fun (table, removedCols) -> TableWriter.dropColumns connection table.schema table.name removedCols)
         "" |> ignore
 
     interface IDatabasePersister with
