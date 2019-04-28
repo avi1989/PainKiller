@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="ListHelpers.fs" />
     <Compile Include="ActivePatterns.fs" />
     <Compile Include="Models.fs" />
     <Compile Include="Contracts\DatabaseContracts.fs" />
