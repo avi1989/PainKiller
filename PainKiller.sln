@@ -5,7 +5,11 @@ VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "PainKiller.ConsoleApp", "src\PainKiller.ConsoleApp\PainKiller.ConsoleApp.fsproj", "{DAE96C9F-AFA6-404D-8DCA-45DDA23F4DF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PainKiller.ConsoleApp.Tests", "src\PainKiller.ConsoleApp.Tests\PainKiller.ConsoleApp.Tests.csproj", "{E24C91D2-017F-44C8-A189-879F15444C63}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PainKiller.ConsoleApp.Tests", "src\PainKiller.ConsoleApp.Tests\PainKiller.ConsoleApp.Tests.csproj", "{E24C91D2-017F-44C8-A189-879F15444C63}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PainKiller.Abstractions", "src\PainKiller.Abstractions\PainKiller.Abstractions.fsproj", "{30D3EB21-24A5-41E4-B811-E153B8BC5065}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PainKiller.Adapters.PostgreSQL", "src\PainKiller.Adapters.PostgreSQL\PainKiller.Adapters.PostgreSQL.fsproj", "{BC42E154-890D-46CA-910B-20B1684CFF05}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{E24C91D2-017F-44C8-A189-879F15444C63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E24C91D2-017F-44C8-A189-879F15444C63}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E24C91D2-017F-44C8-A189-879F15444C63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30D3EB21-24A5-41E4-B811-E153B8BC5065}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30D3EB21-24A5-41E4-B811-E153B8BC5065}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30D3EB21-24A5-41E4-B811-E153B8BC5065}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30D3EB21-24A5-41E4-B811-E153B8BC5065}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC42E154-890D-46CA-910B-20B1684CFF05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC42E154-890D-46CA-910B-20B1684CFF05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC42E154-890D-46CA-910B-20B1684CFF05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC42E154-890D-46CA-910B-20B1684CFF05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
