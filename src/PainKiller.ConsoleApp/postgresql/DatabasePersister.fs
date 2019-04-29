@@ -43,12 +43,15 @@ type DatabasePersister() =
         let columnsWhereDefaultChanged = pairedColumnsBetweenFsAndDbWithoutNulls 
                                             |> List.filter (fun (fs, db) -> fs.defaultValue <> db.defaultValue)
                                             |> List.map (fun (fs, db) -> fs)
-
+        let columnsWhereNullableChanged = pairedColumnsBetweenFsAndDbWithoutNulls
+                                            |> List.filter (fun (fs, db) -> fs.isNullable <> db.isNullable)
+                                            |> List.map (fun (fs, db) -> fs)
 
         columnsToBeAdded |> TableWriter.addColumns connection fsTable.schema fsTable.name
         columnsToBeRemoved |> TableWriter.dropColumns connection fsTable.schema fsTable.name
         columnsWhereDataTypeChanged |> TableWriter.alterColumnTypes connection fsTable.schema fsTable.name
         columnsWhereDefaultChanged |> TableWriter.alterColumnDefaults connection fsTable.schema fsTable.name
+        columnsWhereNullableChanged |> TableWriter.alterColumnNulable connection fsTable.schema fsTable.name
         "" |> ignore
 
     let alterTables connection (pairedTables: (TableInfo * TableInfo) list) = 

@@ -104,3 +104,21 @@ let alterColumnDefaults (sqlConnection: NpgsqlConnection) schema table columns =
                                     | Some s -> buildQueryForTable col.name (sprintf "SET DEFAULT %s" s)
                                     | None -> buildQueryForTable col.name "DROP DEFAULT"
                         executeQuery query )
+
+let alterColumnNulable (sqlConnection: NpgsqlConnection) schema table columns =
+    let buildQueryForTable = sprintf "ALTER TABLE %s.%s ALTER COLUMN \"%s\" %s NOT NULL" schema table
+    let setConn ()= 
+        if sqlConnection.State <> ConnectionState.Open
+        then sqlConnection.Open() |> ignore
+
+    let executeQuery query =
+        use command = sqlConnection.CreateCommand()
+        command.CommandText <- query
+        command.ExecuteNonQuery() |> ignore
+    columns
+        |> List.iter(fun (col: Column) -> 
+                        setConn()
+                        let query = match col.isNullable with
+                                    | true -> buildQueryForTable col.name "SET"
+                                    | false -> buildQueryForTable col.name "DROP"
+                        executeQuery query )

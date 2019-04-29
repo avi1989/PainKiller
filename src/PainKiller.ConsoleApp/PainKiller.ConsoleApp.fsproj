@@ -16,6 +16,7 @@
     <Compile Include="postgresql\Persisters\SimpleScriptWriter.fs" />
     <Compile Include="postgresql\Persisters\UdtWriter.fs" />
     <Compile Include="postgresql\Persisters\TableWriter.fs" />
+    <Compile Include="postgresql\Retrievers\IndexRetriever.fs" />
     <Compile Include="postgresql\Retrievers\SequenceRetriever.fs" />
     <Compile Include="postgresql\Retrievers\SchemaRetriever.fs" />
     <Compile Include="postgresql\Retrievers\UdtRetriever.fs" />
