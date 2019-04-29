@@ -8,8 +8,9 @@ let writeSimpleScript (connection: NpgsqlConnection) (simpleScript: SimpleDataba
     if connection.State <> ConnectionState.Open
     then connection.Open() |> ignore
 
+    let query = simpleScript.definition.Replace("CREATE INDEX", "CREATE INDEX IF NOT EXISTS")
     use command = connection.CreateCommand()
-    command.CommandText <- simpleScript.definition
+    command.CommandText <- query;
     command.ExecuteNonQuery() |> ignore
 
 let writeSimpleScripts connection simpleScript =

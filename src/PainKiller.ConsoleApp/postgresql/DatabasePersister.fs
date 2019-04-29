@@ -63,12 +63,6 @@ type DatabasePersister() =
         let pairedTables = ListHelpers.pairListsWithoutUnpairedItems (fun a b -> a.name = b.name && a.schema = b.schema) fileSystemTables databaseTables
         newTables |> (TableWriter.createTables connection >> (ConstraintPersister.createConstraintsForTables connection)) |> ignore
         alterTables connection pairedTables |> ignore
-        //let tablesWithAddedColumns = Helpers.getNewlyAddedColumns databaseTables fileSystemTables
-        //let tablesWithRemovedColumns = Helpers.getRemovedColumns databaseTables fileSystemTables
-
-        //tablesWithAddedColumns |> List.iter (fun (table, addedCols) -> TableWriter.addColumns connection table.schema table.name addedCols)
-        //tablesWithRemovedColumns |> List.iter (fun (table, removedCols) -> TableWriter.dropColumns connection table.schema table.name removedCols)
-        "" |> ignore
 
     interface IDatabasePersister with
         member _this.PersistDatabase connectionString currentStateOfDatabase databaseFromFileSystem =
@@ -83,4 +77,5 @@ type DatabasePersister() =
             databaseFromFileSystem.views |> SimpleScriptWriter.writeSimpleScripts connection
             databaseFromFileSystem.functions |> SimpleScriptWriter.writeSimpleScripts connection
             databaseFromFileSystem.procedures |> SimpleScriptWriter.writeSimpleScripts connection
+            databaseFromFileSystem.indexes |> SimpleScriptWriter.writeSimpleScripts connection
             

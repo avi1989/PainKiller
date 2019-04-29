@@ -66,4 +66,5 @@ type Database = {
     userDefinedTypes: UdtInfo list
     schemas: string list
     sequences: SimpleDatabaseItem list
+    indexes: SimpleDatabaseItem list
 }

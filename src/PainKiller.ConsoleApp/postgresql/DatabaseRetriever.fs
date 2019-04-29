@@ -17,6 +17,7 @@ type DatabaseRetriever() =
                 userDefinedTypes = UdtRetriever.loadUserDefinedTypes connection connectionFactory
                 schemas = SchemaRetriever.getSchemas connection
                 sequences = SequenceRetriever.getSequences connection
+                indexes = IndexRetriever.getAllIndexes connection
             }
 
 

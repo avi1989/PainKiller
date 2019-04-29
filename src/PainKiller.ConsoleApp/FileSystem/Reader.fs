@@ -10,4 +10,5 @@ let readFromFileSystem basePath engine =
       procedures = readSimpleScripts "procedures"
       userDefinedTypes = Readers.UdtReader.readUdts engine basePath 
       schemas = Readers.SchemaReader.readSchemas basePath
-      sequences = Readers.SimpleScriptReader.readScripts engine basePath "sequences" }
+      sequences = Readers.SimpleScriptReader.readScripts engine basePath "sequences"
+      indexes = Readers.SimpleScriptReader.readScripts engine basePath "indexes" }
