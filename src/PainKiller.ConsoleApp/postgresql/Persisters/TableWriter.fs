@@ -11,8 +11,11 @@ let private getColString (col: Column) =
     let defaultVal = match col.defaultValue with
                      | Some value -> sprintf "DEFAULT %s" value
                      | None -> ""
+    let nullString = match col.isNullable with
+                    | true -> ""
+                    | false -> "NOT NULL"
 
-    sprintf "\"%s\" %s %s" col.name dbColType defaultVal
+    sprintf "\"%s\" %s %s %s" col.name dbColType nullString defaultVal
 
 let private generateCreateStatement (table: TableInfo) =
     let columnInserts = table.columns

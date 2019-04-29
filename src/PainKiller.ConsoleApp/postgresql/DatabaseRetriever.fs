@@ -16,6 +16,7 @@ type DatabaseRetriever() =
                 procedures = ProcedureRetriever.loadProcedures connection
                 userDefinedTypes = UdtRetriever.loadUserDefinedTypes connection connectionFactory
                 schemas = SchemaRetriever.getSchemas connection
+                sequences = SequenceRetriever.getSequences connection
             }
 
 

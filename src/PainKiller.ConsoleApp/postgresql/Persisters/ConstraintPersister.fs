@@ -18,11 +18,20 @@ let createConstraint (sqlConnection: NpgsqlConnection) table schema (con: TableC
     command.CommandText <- constraintQuery
     command.ExecuteNonQuery() |> ignore
 
-let createConstraintsForTable sqlConnection (table: TableInfo) =
+let createTableConstraints sqlConnection (table: TableInfo) =
     table.constraints
+        |> List.choose (fun x -> match x.``type`` with
+                                    | ForeignKey _ -> None
+                                    | _ -> Some x )
         |> List.iter (createConstraint sqlConnection table.name table.schema)
 
-let createConstraintsForTables sqlConnection (tables: TableInfo list) =
-    tables
-        |> List.iter (createConstraintsForTable sqlConnection)
-    tables
+let createReferentialConstraints sqlConnection (table: TableInfo) =
+    table.constraints
+    |> List.choose (fun x -> match x.``type`` with
+                                | ForeignKey _ -> Some x
+                                | _ -> None )
+    |> List.iter (createConstraint sqlConnection table.name table.schema)
+
+let createConstraintsForTables connection (tables: TableInfo list) =
+    tables |> List.iter (createTableConstraints connection)
+    tables |> List.iter (createReferentialConstraints connection)

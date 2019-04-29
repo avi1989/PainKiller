@@ -26,9 +26,6 @@ module Helpers =
 
     let getRemovedColumns tablesInDatabase tablesInFileSystem =  getNewlyAddedColumns tablesInFileSystem tablesInDatabase
 
-    let getColumnsWhereDefaultAdded =
-        true
-
     let getColumnsWhereIsNullableChanged =
         true
 
@@ -76,7 +73,7 @@ type DatabasePersister() =
             use connection = connectionFactory()
             let newUdts = Helpers.getNewUdts currentStateOfDatabase.userDefinedTypes databaseFromFileSystem.userDefinedTypes
             databaseFromFileSystem.schemas |> SchemaWriter.createSchemas connection
-
+            databaseFromFileSystem.sequences |> SimpleScriptWriter.writeSimpleScripts connection
             persistTables connection currentStateOfDatabase.tables databaseFromFileSystem.tables
 
             newUdts |> UdtWriter.createUdts connection

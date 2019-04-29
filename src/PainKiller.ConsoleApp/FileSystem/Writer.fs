@@ -9,3 +9,4 @@ let writeToFileSystem basePath engine (database: Models.Database) =
     database.views |> SimpleScriptWriter.writeToFileSystem basePath "views" |> ignore
     database.procedures |> SimpleScriptWriter.writeToFileSystem basePath "procedures" |> ignore
     database.userDefinedTypes |> UdtWriter.writeToFileSystem basePath |> ignore
+    database.sequences |> SimpleScriptWriter.writeToFileSystem basePath "sequences" |> ignore

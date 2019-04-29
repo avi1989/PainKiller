@@ -65,4 +65,5 @@ type Database = {
     procedures: SimpleDatabaseItem list
     userDefinedTypes: UdtInfo list
     schemas: string list
+    sequences: SimpleDatabaseItem list
 }
