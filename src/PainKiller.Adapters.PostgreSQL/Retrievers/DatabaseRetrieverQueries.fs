@@ -1,4 +1,4 @@
-﻿module PainKiller.Adapters.PostgreSQL.DatabaseRetrieverQueries
+﻿module PainKiller.Adapters.PostgreSQL.Retrievers.DatabaseRetrieverQueries
 
 module TableQueries =
     let getAllTablesQuery = """
@@ -12,7 +12,7 @@ module TableQueries =
     let getColumns = sprintf """
         SELECT column_name, ordinal_position, column_default, is_nullable, udt_name::regtype::text as data_type, character_maximum_length 
         FROM information_schema.columns
-        WHERE table_schema = %s AND table_name = %s
+        WHERE table_schema = '%s' AND table_name = '%s'
     """
 
     let getTableConstraints = sprintf """
@@ -27,7 +27,7 @@ module TableQueries =
         JOIN pg_class tbl ON tbl.oid = c.conrelid
         JOIN pg_namespace sch ON sch.oid = tbl.relnamespace
         JOIN pg_attribute col ON (col.attrelid = tbl.oid AND col.attnum = u.attnum)
-        WHERE contype <> 'f' AND sch.nspname = %s AND tbl.relname = %s
+        WHERE contype <> 'f' AND sch.nspname = '%s' AND tbl.relname = '%s'
         GROUP BY constraint_name, constraint_type, table_schema, table_name, definition
         ORDER BY table_schema, table_name;
     """
@@ -88,5 +88,99 @@ module TableQueries =
                     FROM pg_class INNER JOIN pg_namespace ON pg_class.relnamespace=pg_namespace.oid
                 ) AS tt ON tt.oid=c.confrelid
             WHERE c.contype = 'f' ORDER BY 1 ) as T
-        WHERE t.from_schema = %s AND t.from_table = %s
+        WHERE t.from_schema = '%s' AND t.from_table = '%s'
+    """
+
+module IndexQueries = 
+    let getIndexQuery = """
+    SELECT
+    n.nspname  as schema
+        ,t.relname  as tableName
+        ,c.relname  as name
+        ,c.relkind as kind
+        ,pg_get_indexdef(indexrelid) as definition
+    FROM pg_catalog.pg_class c
+        JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+        JOIN pg_catalog.pg_index i ON i.indexrelid = c.oid
+        JOIN pg_catalog.pg_class t ON i.indrelid   = t.oid
+    WHERE  c.relkind = 'i' AND
+      n.nspname not in ('pg_catalog', 'pg_toast') AND
+      pg_catalog.pg_table_is_visible(c.oid) AND
+      pg_get_indexdef(indexrelid) NOT LIKE '%UNIQUE%btree%'
+    ORDER BY
+    n.nspname
+        ,t.relname
+        ,c.relname;
+    """
+
+module SequenceQueries = 
+    let getSequencesQuery = """
+    SELECT sequence_schema, sequence_name, data_type, increment, minimum_value, start_value 
+    FROM information_schema.sequences
+    """
+
+module SchemaQueries =
+    let getSchemaQuery = """
+    SELECT * FROM information_schema.schemata
+    WHERE schema_name not in ('pg_catalog', 'pg_toast')
+    AND schema_name NOT LIKE 'pg_toast_%'
+    AND schema_name NOT LIKE 'pg_temp_%';
+    """
+
+module UdtQueries =
+    let getUserDefinedTypesQuery = """
+       SELECT
+           user_defined_type_schema as schema ,
+           user_defined_type_name as name
+       FROM information_schema.user_defined_types t
+       """
+   
+    let getUserColumnsForUserDefinitedType = sprintf """
+        SELECT
+           attribute_name,
+           ordinal_position,
+           is_nullable,
+           data_type,
+           character_maximum_length
+        FROM information_schema.attributes
+        WHERE udt_schema = '%s' and udt_name = '%s';
+        """
+
+module ProcedureRetrieverQueries =
+    let getProcedureQueries = """
+        SELECT 
+            proc.proname as name,
+            ns.nspname as schema,
+            pg_get_functiondef(proc.oid) as definition,
+            prosrc as function_body
+        FROM pg_proc proc
+        LEFT JOIN pg_namespace ns on ns.oid = proc.pronamespace
+            WHERE proc.prokind = 'p'
+            AND ns.nspname NOT IN ('pg_catalog', 'information_schema')
+            AND probin is null;
+        """
+
+module ViewRetrieverQueries = 
+    let getViewQuery = """
+        SELECT 
+                table_schema as schema, 
+                table_name as name, 
+                view_definition as definition 
+        FROM information_schema.views
+        WHERE table_schema NOT IN ('pg_catalog', 'information_schema')
+        AND table_schema NOT LIKE 'pg_toast%';
+        """
+
+module FunctionRetrieverQueries =
+    let getFunctionQuery = """
+    SELECT 
+        proc.proname as name,
+        ns.nspname as schema,
+        pg_get_functiondef(proc.oid) as definition,
+        prosrc as function_body
+    FROM pg_proc proc
+    LEFT JOIN pg_namespace ns on ns.oid = proc.pronamespace
+        WHERE proc.prokind = 'f'
+        AND ns.nspname NOT IN ('pg_catalog', 'information_schema')
+        AND probin is null;
     """

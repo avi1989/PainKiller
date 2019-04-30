@@ -1,6 +1,6 @@
 ﻿namespace PainKiller.ConsoleApp.Contracts
 
-open PainKiller.ConsoleApp.Models
+open PainKiller.Abstractions.Models
 
 type IDatabaseRetriever =
     abstract member GetDatabase: string -> Database

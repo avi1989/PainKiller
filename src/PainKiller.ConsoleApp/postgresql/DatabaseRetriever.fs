@@ -2,23 +2,21 @@
 
 open PainKiller.ConsoleApp.Contracts
 open Npgsql
-open PainKiller.ConsoleApp.PostgreSQL.Retrievers
+open PainKiller.Adapters.PostgreSQL
+open PainKiller.Abstractions.Contracts
 
 type DatabaseRetriever() =
     interface IDatabaseRetriever with
         member this.GetDatabase connectionString =
-            let connectionFactory = fun () -> new NpgsqlConnection(connectionString)
-            use connection = connectionFactory()
-            {
-                tables = TableRetriever.loadTables connection connectionFactory
-                functions = FunctionRetriever.loadFunctions connection
-                views = ViewRetriever.loadViews connection
-                procedures = ProcedureRetriever.loadProcedures connection
-                userDefinedTypes = UdtRetriever.loadUserDefinedTypes connection connectionFactory
-                schemas = SchemaRetriever.getSchemas connection
-                sequences = SequenceRetriever.getSequences connection
-                indexes = IndexRetriever.getAllIndexes connection
-            }
+            let actualRetriever = DatabaseReader() :> IDatabaseReader
+            { tables = actualRetriever.GetTables connectionString
+              functions = actualRetriever.GetFunctions connectionString
+              views = actualRetriever.GetViews connectionString
+              procedures = actualRetriever.GetProcedures connectionString
+              userDefinedTypes = actualRetriever.GetUserDefinedTypes connectionString
+              schemas = actualRetriever.GetSchemas connectionString
+              sequences = actualRetriever.GetSequences connectionString
+              indexes = actualRetriever.GetIndexes connectionString }
 
 
 

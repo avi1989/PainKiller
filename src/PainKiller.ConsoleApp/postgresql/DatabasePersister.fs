@@ -3,7 +3,7 @@
 open PainKiller.ConsoleApp.Contracts
 open Npgsql
 open PainKiller.ConsoleApp.PostgreSQL.Persisters
-open PainKiller.ConsoleApp.Models
+open PainKiller.Abstractions.Models
 open PainKiller.ConsoleApp
 
 module Helpers = 

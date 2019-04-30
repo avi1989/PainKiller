@@ -3,7 +3,7 @@
 open Npgsql
 open System.Data
 open PainKiller.ConsoleApp.PostgreSQL
-open PainKiller.ConsoleApp.Models
+open PainKiller.Abstractions.Models
 open System.Text
 
 let createSchema (sqlConnection: NpgsqlConnection) schema =

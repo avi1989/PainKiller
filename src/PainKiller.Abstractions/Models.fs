@@ -1,4 +1,4 @@
-﻿namespace PainKiller.Abstractions.Models
+﻿module PainKiller.Abstractions.Models
 
 type ReferentialConstraint = {
     sourceColumns: string list

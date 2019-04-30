@@ -6,9 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <EmbeddedResource Remove="postgresql\Retrievers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Include="ListHelpers.fs" />
     <Compile Include="ActivePatterns.fs" />
-    <Compile Include="Models.fs" />
     <Compile Include="Contracts\DatabaseContracts.fs" />
     <Compile Include="postgresql\ColumnTypeMapper.fs" />
     <Compile Include="postgresql\Persisters\SchemaWriter.fs" />
@@ -16,14 +19,6 @@
     <Compile Include="postgresql\Persisters\SimpleScriptWriter.fs" />
     <Compile Include="postgresql\Persisters\UdtWriter.fs" />
     <Compile Include="postgresql\Persisters\TableWriter.fs" />
-    <Compile Include="postgresql\Retrievers\IndexRetriever.fs" />
-    <Compile Include="postgresql\Retrievers\SequenceRetriever.fs" />
-    <Compile Include="postgresql\Retrievers\SchemaRetriever.fs" />
-    <Compile Include="postgresql\Retrievers\UdtRetriever.fs" />
-    <Compile Include="postgresql\Retrievers\ProcedureRetriever.fs" />
-    <Compile Include="postgresql\Retrievers\ViewRetriever.fs" />
-    <Compile Include="postgresql\Retrievers\FunctionRetriever.fs" />
-    <Compile Include="postgresql\Retrievers\TableRetriever.fs" />
     <Compile Include="postgresql\DatabaseRetriever.fs" />
     <Compile Include="postgresql\DatabasePersister.fs" />
     <Compile Include="FileSystem\Dto.fs" />
@@ -43,6 +38,11 @@
 
   <ItemGroup>
     <PackageReference Include="Npgsql" Version="4.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PainKiller.Abstractions\PainKiller.Abstractions.fsproj" />
+    <ProjectReference Include="..\PainKiller.Adapters.PostgreSQL\PainKiller.Adapters.PostgreSQL.fsproj" />
   </ItemGroup>
 
 </Project>

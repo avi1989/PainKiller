@@ -3,14 +3,14 @@ open System.Data
 open PainKiller.Abstractions.Models
 
 type IDatabaseReader =
-    abstract member GetTables: IDbConnection -> TableInfo list
-    abstract member GetFunctions: IDbConnection -> SimpleDatabaseItem list
-    abstract member GetViews: IDbConnection -> SimpleDatabaseItem list
-    abstract member GetProcedures: IDbConnection -> SimpleDatabaseItem list
-    abstract member GetUserDefinedTypes: IDbConnection -> UdtInfo list
-    abstract member GetSchemas: IDbConnection -> SimpleDatabaseItem list
-    abstract member GetSequences: IDbConnection -> SimpleDatabaseItem list
-    abstract member GetIndexes: IDbConnection -> SimpleDatabaseItem list
+    abstract member GetTables: string -> TableInfo list
+    abstract member GetFunctions: string -> SimpleDatabaseItem list
+    abstract member GetViews: string -> SimpleDatabaseItem list
+    abstract member GetProcedures: string -> SimpleDatabaseItem list
+    abstract member GetUserDefinedTypes: string -> UdtInfo list
+    abstract member GetSchemas: string -> string list
+    abstract member GetSequences: string -> SimpleDatabaseItem list
+    abstract member GetIndexes: string -> SimpleDatabaseItem list
 
 type IDdlStatementGenerator =
     abstract member GetCreateConstraintStatements: TableInfo -> string

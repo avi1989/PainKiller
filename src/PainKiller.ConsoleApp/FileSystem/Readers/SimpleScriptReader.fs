@@ -1,6 +1,7 @@
 ﻿module PainKiller.ConsoleApp.FileSystem.Readers.SimpleScriptReader
 
 open System.IO
+open PainKiller.Abstractions
 open PainKiller.ConsoleApp
 
 let private readScript filePath =

@@ -5,11 +5,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="ColumnTypeMapper.fs" />
+    <Compile Include="Retrievers\SimpleScriptRetriever.fs" />
+    <Compile Include="Retrievers\DatabaseRetrieverQueries.fs" />
+    <Compile Include="Retrievers\SchemaRetriever.fs" />
+    <Compile Include="Retrievers\TableRetriever.fs" />
+    <Compile Include="Retrievers\SequenceRetriever.fs" />
+    <Compile Include="Retrievers\UdtRetriever.fs" />
     <Compile Include="DatabaseReader.fs" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Npgsql" Version="4.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PainKiller.Abstractions\PainKiller.Abstractions.fsproj" />
+    <ProjectReference Include="..\PainKiller.DataAccess\PainKiller.DataAccess.fsproj" />
   </ItemGroup>
 
 </Project>

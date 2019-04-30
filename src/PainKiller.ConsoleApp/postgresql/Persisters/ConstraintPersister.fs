@@ -1,6 +1,6 @@
 ﻿module PainKiller.ConsoleApp.PostgreSQL.Persisters.ConstraintPersister
 
-open PainKiller.ConsoleApp.Models
+open PainKiller.Abstractions.Models
 open Npgsql
 open System.Data
 

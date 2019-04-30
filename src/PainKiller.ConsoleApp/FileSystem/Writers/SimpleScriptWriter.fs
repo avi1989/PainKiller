@@ -1,7 +1,7 @@
 ﻿module PainKiller.ConsoleApp.FileSystem.Writers.SimpleScriptWriter
 
 open System.IO
-open PainKiller.ConsoleApp
+open PainKiller.Abstractions
 
 let private writeItem basePath (func: Models.SimpleDatabaseItem)  =
     let filePath = sprintf "%s/%s.%s.sql" basePath func.schema func.name

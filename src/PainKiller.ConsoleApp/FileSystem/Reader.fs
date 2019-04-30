@@ -1,6 +1,6 @@
 ﻿module PainKiller.ConsoleApp.FileSystem.Reader
 open PainKiller.ConsoleApp
-open PainKiller.ConsoleApp.Models
+open PainKiller.Abstractions.Models
 
 let readFromFileSystem basePath engine =
     let readSimpleScripts = Readers.SimpleScriptReader.readScripts engine basePath

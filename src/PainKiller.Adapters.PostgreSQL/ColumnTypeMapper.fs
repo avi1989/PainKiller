@@ -1,4 +1,4 @@
-﻿module PainKiller.ConsoleApp.PostgreSQL.ColumnTypeMapper
+﻿module PainKiller.Adapters.PostgreSQL.ColumnTypeMapper
 
 open PainKiller.Abstractions.Models
 open System

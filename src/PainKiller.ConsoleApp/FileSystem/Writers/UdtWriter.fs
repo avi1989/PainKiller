@@ -1,6 +1,6 @@
 ﻿module PainKiller.ConsoleApp.FileSystem.Writers.UdtWriter
 
-open PainKiller.ConsoleApp
+open PainKiller.Abstractions
 open PainKiller.ConsoleApp.FileSystem
 
 let writeToFileSystem filePath (tables: Models.UdtInfo list) =

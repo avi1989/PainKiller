@@ -1,6 +1,6 @@
 ﻿module PainKiller.ConsoleApp.FileSystem.Writers.TableWriter
 
-open PainKiller.ConsoleApp
+open PainKiller.Abstractions
 open PainKiller.ConsoleApp.FileSystem
 
 let writeToFileSystem engine filePath (tables: Models.TableInfo list) =

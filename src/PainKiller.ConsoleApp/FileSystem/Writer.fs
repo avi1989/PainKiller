@@ -1,5 +1,5 @@
 ﻿module PainKiller.ConsoleApp.FileSystem.Writer
-open PainKiller.ConsoleApp
+open PainKiller.Abstractions
 open PainKiller.ConsoleApp.FileSystem.Writers
 
 let writeToFileSystem basePath engine (database: Models.Database) =

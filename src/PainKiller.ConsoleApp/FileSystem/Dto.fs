@@ -3,6 +3,7 @@
 open System.Xml.Serialization
 open PainKiller.ConsoleApp
 open PainKiller.ConsoleApp.ActivePatterns
+open PainKiller.Abstractions
 
 type Models.ColumnType with
     member this.FromDomain() =
