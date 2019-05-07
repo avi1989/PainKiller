@@ -13,12 +13,11 @@ type IDatabaseReader =
     abstract member GetIndexes: string -> SimpleDatabaseItem list
 
 type IDdlStatementGenerator =
-    abstract member GetCreateConstraintStatements: TableInfo -> string
-    abstract member GetCreateForeignKeyStatements: TableInfo -> string
+    abstract member GetCreateConstraintStatements: string -> string -> TableConstraint -> string
     abstract member GetCreateTableStatement: TableInfo -> string
-    abstract member GetAddColumnsStatement: Column -> string
+    abstract member GetAddColumnStatement: Column -> string
     abstract member GetDropColumnStatement: Column -> string
     abstract member GetChangeColumnTypeStatement: Column -> string
     abstract member GetChangeColumnDefaultStatement: Column -> string
-    abstract member ChangeColumnNullableStatement: Column -> string
-    abstract member CreateUdtStatements: UdtInfo -> unit
+    abstract member GetChangeColumnNullableStatement: Column -> string
+    abstract member GetCreateUdtStatements: UdtInfo -> string

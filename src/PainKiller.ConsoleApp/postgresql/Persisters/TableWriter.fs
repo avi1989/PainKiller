@@ -12,8 +12,8 @@ let private getColString (col: Column) =
                      | Some value -> sprintf "DEFAULT %s" value
                      | None -> ""
     let nullString = match col.isNullable with
-                    | true -> ""
-                    | false -> "NOT NULL"
+                     | true -> ""
+                     | false -> "NOT NULL"
 
     sprintf "\"%s\" %s %s %s" col.name dbColType nullString defaultVal
 

@@ -13,6 +13,7 @@
     <Compile Include="Retrievers\SequenceRetriever.fs" />
     <Compile Include="Retrievers\UdtRetriever.fs" />
     <Compile Include="DatabaseReader.fs" />
+    <Compile Include="SqlGenerator.fs" />
   </ItemGroup>
 
   <ItemGroup>
