@@ -21,6 +21,7 @@
     <Compile Include="postgresql\Persisters\TableWriter.fs" />
     <Compile Include="postgresql\DatabaseRetriever.fs" />
     <Compile Include="postgresql\DatabasePersister.fs" />
+    <Compile Include="postgresql\DatabaseScriptGenerator.fs" />
     <Compile Include="FileSystem\Dto.fs" />
     <Compile Include="FileSystem\Readers\UdtReader.fs" />
     <Compile Include="FileSystem\Readers\SimpleScriptReader.fs" />
